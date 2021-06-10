@@ -1,5 +1,8 @@
 package gr.aueb.tikatokaapp.Core;
 
+import android.media.MediaMetadataRetriever;
+import android.os.Build;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -9,12 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.mp4.MP4Parser;
-import org.apache.tika.sax.BodyContentHandler;
-import org.xml.sax.SAXException;
 
 public class ChannelName {
 
@@ -37,6 +34,8 @@ public class ChannelName {
 
     public ArrayList<String> updateChannel(String dir) {
         ArrayList<String> addedHashtags = new ArrayList<String>();
+        MediaMetadataRetriever retriever = null;
+
         try {
 
             Scanner scanner = new Scanner(new FileReader(dir + File.separator + "topics.txt"));
@@ -50,15 +49,15 @@ public class ChannelName {
                 if ( containsVideo( parts[0],channelName) )
                     continue;
 
-                BodyContentHandler handler = new BodyContentHandler();
-                Metadata metadata = new Metadata();
-                FileInputStream inputstream = new FileInputStream(f);
-                ParseContext pcontext = new ParseContext();
-                MP4Parser MP4Parser = new MP4Parser();
-                MP4Parser.parse(inputstream, handler, metadata, pcontext);
+                retriever = new MediaMetadataRetriever();
+                if (Build.VERSION.SDK_INT >= 14)
+                    retriever.setDataSource(f.getPath(), new HashMap<String, String>());
+                else
+                    retriever.setDataSource(f.getPath());
 
-                VideoFile videoFile = new VideoFile(f.getName(), channelName, metadata.get("date"), metadata.get("xmpDM:duration")
-                        , metadata.get("framerate"), metadata.get("tiff:ImageLength"), metadata.get("tiff:ImageWidth"), null);
+
+                VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
+                        , String.valueOf(retriever.METADATA_KEY_CAPTURE_FRAMERATE), String.valueOf(retriever.METADATA_KEY_IMAGE_HEIGHT), String.valueOf(retriever.METADATA_KEY_IMAGE_WIDTH), null);
 
                 videos.add(new Value(videoFile));
                 if (parts.length == 1) continue;            //if there are no topics for a video
@@ -74,7 +73,7 @@ public class ChannelName {
                     existing.add(videos.get(videos.size() - 1));
                 }
             }
-        } catch (IOException | SAXException | TikaException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return addedHashtags;

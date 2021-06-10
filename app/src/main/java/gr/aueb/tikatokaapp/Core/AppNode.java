@@ -1,5 +1,9 @@
 package gr.aueb.tikatokaapp.Core;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.net.*;
 import java.io.*;
 import java.nio.file.*;
@@ -18,7 +22,7 @@ public class AppNode implements Publisher, Consumer {
     private final List<String> subscribedTopics = Collections.synchronizedList(new ArrayList<String>());
 
     public static void main(String args[]) throws InterruptedException, UnknownHostException {
-        
+
         // User enters the IP of his/her machine, and a Port from terminal and the name of his/her channel.
         String IP = args[0];
         int PORT = Integer.parseInt(args[1]);
@@ -145,6 +149,7 @@ public class AppNode implements Publisher, Consumer {
 
     ///////////////////////////////////////////////     PUBLISHER       ///////////////////////////////////////////////////////////////////
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void addTopics(String videoFileName) throws IOException {
         Scanner scan = new Scanner(System.in);
@@ -163,6 +168,7 @@ public class AppNode implements Publisher, Consumer {
         notifyEveryBroker(true, deletetedHashtags);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void deleteVideo(String videoFileName) {
         String PATH = outDir + File.separator + "videos" + File.separator + videoFileName;
         try {
@@ -177,6 +183,7 @@ public class AppNode implements Publisher, Consumer {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadVideo(String videoFileName) {
         String PATH = outDir + File.separator + "videos" + File.separator + videoFileName;
         try {
@@ -199,6 +206,7 @@ public class AppNode implements Publisher, Consumer {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void appendInPubTopicsFile(String videoFileName, String[] topics) throws IOException {
         FileWriter fw = new FileWriter(outDir + File.separator + "topics.txt", true); //the true will append the new data
         byte[] bytes = Files.readAllBytes(Paths.get(outDir + File.separator + "topics.txt"));
@@ -326,10 +334,10 @@ public class AppNode implements Publisher, Consumer {
             }
 
             int remaining = ((int) file.length()) % chunkSize;
-         
+
             if (remaining > 0) {
                 int start = chunkNumber * chunkSize;
-                
+
                 byte[] currentChunk = new byte[remaining];
                 for (int i = 0; i < remaining; ++i) {
                     currentChunk[i] = wholeVideo[start + i];
@@ -590,9 +598,10 @@ public class AppNode implements Publisher, Consumer {
 
         public HandleMenu() {}
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         public void run() {
             Scanner scan = new Scanner(System.in);
-            
+
             String s;
             while (RUNNING) {
                 System.out.println("MENU\n1| Upload new Video\n2| Delete a Video\n3| Subscribe to topic\n4| Unsubscribe from topic\n5| Display your subscriptions\n6| Display your published videos\n0| Exit");
