@@ -9,6 +9,7 @@ public class VideoFile implements Serializable {
 	ArrayList<String> associatedHashtags;
 	byte[] videoFileChunk;
 
+
 	public VideoFile(String nameVid, String channel, String date, String length, String framerate, String framewidth, String frameheight, byte[] chunk){
 		super();
 		this.videoName = nameVid;
@@ -42,6 +43,44 @@ public class VideoFile implements Serializable {
 		for(String hashtag : names)
 			this.associatedHashtags.add(hashtag);
 	}
+
+
+	public String getVideoName() {
+		return videoName;
+	}
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	public String getLength() {
+		return length;
+	}
+
+	public String getFramerate() {
+		return framerate;
+	}
+
+	public String getFrameWidth() {
+		return frameWidth;
+	}
+
+	public String getFrameHeight() {
+		return frameHeight;
+	}
+
+	public ArrayList<String> getAssociatedHashtags() {
+		return associatedHashtags;
+	}
+
+	public byte[] getVideoFileChunk() {
+		return videoFileChunk;
+	}
+
 
 	
 	public String toString() {

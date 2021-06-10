@@ -50,11 +50,7 @@ public class ChannelName {
                     continue;
 
                 retriever = new MediaMetadataRetriever();
-                if (Build.VERSION.SDK_INT >= 14)
-                    retriever.setDataSource(f.getPath(), new HashMap<String, String>());
-                else
-                    retriever.setDataSource(f.getPath());
-
+                retriever.setDataSource(f.getPath(), new HashMap<String, String>());
 
                 VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
                         , String.valueOf(retriever.METADATA_KEY_CAPTURE_FRAMERATE), String.valueOf(retriever.METADATA_KEY_IMAGE_HEIGHT), String.valueOf(retriever.METADATA_KEY_IMAGE_WIDTH), null);

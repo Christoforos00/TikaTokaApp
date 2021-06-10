@@ -7,6 +7,7 @@ public class Value implements Serializable {
     private static final long serialVersionUID = -2845096289187611411L;
     public VideoFile videoFile;
 
+
     public Value(VideoFile file) {
         super();
         videoFile = file;
@@ -28,6 +29,10 @@ public class Value implements Serializable {
 
     public String getChannelName() {
         return videoFile.channelName;
+    }
+
+    public VideoFile getVideoFile() {
+        return videoFile;
     }
 
     public String toString() {

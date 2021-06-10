@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TikaTokaApp</string>
+    <string name="enter">ENTER</string>
+    <string name="my_channel">MY CHANNEL</string>
+    <string name="my_subscriptions">MY SUBSCRIPTIONS</string>
+    <string name="uploaded_videos">UPLOADED VIDEOS</string>
+    <string name="videoname">VideoName</string>
+    <string name="date">Date</string>
+    <string name="available">AVAILABLE VIDEOS</string>
 </resources>
