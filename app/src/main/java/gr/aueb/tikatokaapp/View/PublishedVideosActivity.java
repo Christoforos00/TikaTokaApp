@@ -36,7 +36,8 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
 
     @Override
     public ArrayList<Value> getVideoList() {
-        return null;
+
+        return new ArrayList<Value>();
     }
 
 

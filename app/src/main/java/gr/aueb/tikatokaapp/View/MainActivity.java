@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void onEnterClicked(){
         String userName = ((EditText) findViewById(R.id.userName_text)) .getText().toString();
         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
