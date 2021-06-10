@@ -1,7 +1,13 @@
 package gr.aueb.tikatokaapp.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
@@ -13,6 +19,7 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_published_videos);
+        ((FloatingActionButton) findViewById(R.id.add_video_button)).setOnClickListener(v -> onAddVideo() );
 
         if (findViewById(R.id.fragment_container) != null) {
 
@@ -40,7 +47,10 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
         return new ArrayList<Value>();
     }
 
-
+    public void onAddVideo(){
+        Intent intent = new Intent(PublishedVideosActivity.this, UploadVideosActivity.class);
+        startActivity(intent);
+    }
 
 
 }

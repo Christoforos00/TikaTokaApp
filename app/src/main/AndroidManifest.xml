@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikaTokaApp">
-        <activity android:name=".View.PublishedVideosActivity"></activity>
+        <activity android:name=".View.UploadVideosActivity"/>
+        <activity android:name=".View.PublishedVideosActivity"/>
         <activity android:name=".View.MenuActivity" />
         <activity android:name=".View.MainActivity">
             <intent-filter>
