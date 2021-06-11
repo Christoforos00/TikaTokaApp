@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
@@ -43,8 +45,10 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
 
     @Override
     public ArrayList<Value> getVideoList() {
-
-        return new ArrayList<Value>();
+        ArrayList<Value> vals = ConnectedAppNode.getAppNode().getVideos( ConnectedAppNode.getAppNode().getName());
+        if (vals==null)
+            return  new ArrayList<Value>();
+        return vals;
     }
 
     public void onAddVideo(){

@@ -4,11 +4,14 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
@@ -92,7 +96,16 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         if (resultCode == RESULT_OK && requestCode == 1) {
 
             Uri vid = data.getData();
+
+            MediaMetadataRetriever retriever;
+
+
             OLD_VIDEO_PATH = getRealPathFromURI(vid);
+
+//            retriever = new MediaMetadataRetriever();
+//            retriever.setDataSource(OLD_VIDEO_PATH);
+//            Log.wtf("dataa", String.valueOf(retriever.METADATA_KEY_DURATION));
+
             NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
             showPopUp();
 
@@ -109,9 +122,10 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         EditText videoName = (EditText) customLayout.findViewById(R.id.videoName);
         EditText hashtags = (EditText) customLayout.findViewById(R.id.hashtags);
         uploadBtn.setOnClickListener(v -> {
-            VIDEO_NAME = videoName.getText().toString();
+            VIDEO_NAME = videoName.getText().toString()+ ".mp4";
             HASHTAGS = hashtags.getText().toString();
             uploadRecordedVideo();
+            dialog.dismiss();
         });
 
         dialog.show();
@@ -121,12 +135,13 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     private void uploadRecordedVideo() {
 
         try {
-            transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME + ".mp4"));
+            transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME ));
         } catch (IOException e) {
             e.printStackTrace();
         }
         deleteRecursive(new File(OLD_VIDEO_PATH));
-        ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
+        ClientRunner runn = new ClientRunner();
+        runn.execute();
     }
 
 
@@ -185,5 +200,27 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         }
     }
+
+
+
+
+    private class ClientRunner extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
+            return "1";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {  }
+    }
+
+
+
+
+
+
 
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +56,7 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
         public final View mView;
         public final TextView txtVideoName;
         public final TextView txtCreationDate;
-        public final ImageButton btnSelect;
+        public final LinearLayout btnSelect;
         public Value mItem;
 
 

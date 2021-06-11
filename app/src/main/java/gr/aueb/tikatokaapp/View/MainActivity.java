@@ -3,8 +3,11 @@ package gr.aueb.tikatokaapp.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.format.Formatter;
+import android.util.Log;
 import android.widget.EditText;
 import java.io.IOException;
 import gr.aueb.tikatokaapp.Core.AppNode;
@@ -37,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
     public void onEnterClicked(){
         String userName = ((EditText) findViewById(R.id.userName_text)) .getText().toString();
         try {
-            ConnectedAppNode.setAppNode( new AppNode( "127.0.0.1",5000, userName, getAssets().open(String.format("brokers.txt")), Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() ));
+            WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+            String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+            Log.wtf("ippp",ip);
+            ConnectedAppNode.setAppNode( new AppNode( ip,5000, userName, getAssets().open(String.format("brokers.txt")), Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() ));
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

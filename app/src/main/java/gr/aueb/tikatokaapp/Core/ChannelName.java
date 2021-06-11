@@ -52,7 +52,7 @@ public class ChannelName {
 
                 retriever = new MediaMetadataRetriever();
                 Log.wtf("path" , f.getAbsolutePath());
-                retriever.setDataSource(f.getAbsolutePath()+".mp4", new HashMap<String, String>());
+                retriever.setDataSource(f.getAbsolutePath());
 
                 VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
                         , String.valueOf(retriever.METADATA_KEY_CAPTURE_FRAMERATE), String.valueOf(retriever.METADATA_KEY_IMAGE_HEIGHT), String.valueOf(retriever.METADATA_KEY_IMAGE_WIDTH), null);

@@ -71,6 +71,10 @@ public class AppNode implements Publisher, Consumer {
         TimeUnit.SECONDS.sleep(1);
     }
 
+    public String getName(){
+        return channelname.getChannelName();
+    }
+
     public String getProjectDir(String dir) {
         File f = new File(dir + File.separator + "src");
         if (!f.isDirectory())
