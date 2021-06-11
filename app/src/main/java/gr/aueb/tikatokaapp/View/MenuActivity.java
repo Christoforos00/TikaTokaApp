@@ -17,7 +17,7 @@ import gr.aueb.tikatokaapp.R;
 
 public class MenuActivity extends AppCompatActivity {
     String userName;
-    private static final String USER_NAME_EXTRA = "user_name_extra" ;
+    private static final String USER_NAME_EXTRA = "user_name_extra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,23 +25,23 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         findViewById(R.id.channel_button).setOnClickListener(v -> onChannelPressed());
-        findViewById(R.id.feed_button).setOnClickListener(v -> onChannelPressed());
-        findViewById(R.id.subs_button).setOnClickListener(v -> onChannelPressed());
-   }
+        findViewById(R.id.feed_button).setOnClickListener(v -> onFeedPressed());
+        findViewById(R.id.subs_button).setOnClickListener(v -> onSubscriptionsPressed());
+    }
 
 
-    public void onChannelPressed(){
+    public void onChannelPressed() {
         Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
         startActivity(intent);
     }
 
-    public void onFeedPressed(){
+    public void onFeedPressed() {
         Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
         startActivity(intent);
     }
 
-    public void onSubscriptionsPressed(){
-        Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
+    public void onSubscriptionsPressed() {
+        Intent intent = new Intent(MenuActivity.this, SubscribeActivity.class);
         startActivity(intent);
     }
 }

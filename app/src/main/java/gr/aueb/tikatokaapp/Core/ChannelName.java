@@ -4,6 +4,8 @@ import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -35,7 +37,7 @@ public class ChannelName {
 
     public ArrayList<String> updateChannel(String dir) {
         ArrayList<String> addedHashtags = new ArrayList<String>();
-        MediaMetadataRetriever retriever = null;
+        MediaMetadataRetriever retriever;
 
         try {
 
@@ -46,16 +48,16 @@ public class ChannelName {
 
                 String[] parts = scanner.nextLine().split(":");
                 f = new File(dir + File.separator + "videos" + File.separator + parts[0]);
-                if ( containsVideo( parts[0],channelName) )
+                if (containsVideo(parts[0], channelName))
                     continue;
 
                 retriever = new MediaMetadataRetriever();
-                Log.wtf("path" , f.getAbsolutePath());
+                Log.wtf("path", f.getAbsolutePath());
                 retriever.setDataSource(f.getAbsolutePath());
 
                 VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
                         , String.valueOf(retriever.METADATA_KEY_CAPTURE_FRAMERATE), String.valueOf(retriever.METADATA_KEY_IMAGE_HEIGHT), String.valueOf(retriever.METADATA_KEY_IMAGE_WIDTH), null);
-
+                videoFile.setThumbnail(retriever.getFrameAtTime());
                 videos.add(new Value(videoFile));
                 if (parts.length == 1) continue;            //if there are no topics for a video
 
@@ -105,8 +107,8 @@ public class ChannelName {
         return deletedHashtags;
     }
 
-    public boolean containsVideo(String name , String channel){
-        return videos.contains(new Value(name,channel));
+    public boolean containsVideo(String name, String channel) {
+        return videos.contains(new Value(name, channel));
     }
 
     public ArrayList<String> getAllHashtags() {
@@ -125,7 +127,6 @@ public class ChannelName {
             str += value.toString() + ", ";
         return str;
     }
-
 
 
 }

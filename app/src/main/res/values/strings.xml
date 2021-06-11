@@ -10,6 +10,8 @@
     <string name="add_hashtags">ADD HASHTAGS</string>
     <string name="upload">upload</string>
     <string name="my_feed">MY FEED</string>
-    <string name="my_feed">MY FEED</string>
     <string name="topic_name">topic name</string>
+    <string name="hashtags">#HASHTAGS</string>
+    <string name="subscribe">SUBSCRIBE</string>
+    <string name="available_topics">Available Topics</string>
 </resources>

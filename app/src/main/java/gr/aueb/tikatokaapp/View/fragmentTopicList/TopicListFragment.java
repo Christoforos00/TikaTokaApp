@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
+
 import gr.aueb.tikatokaapp.R;
+import gr.aueb.tikatokaapp.View.fragmentTopicList.TopicListRecyclerViewAdapter.ViewHolder;
 
 
 public class TopicListFragment extends Fragment {
@@ -20,7 +24,8 @@ public class TopicListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    public TopicListFragment() { }
+    public TopicListFragment() {
+    }
 
     @SuppressWarnings("unused")
     public static TopicListFragment newInstance(int columnCount) {
@@ -77,7 +82,8 @@ public class TopicListFragment extends Fragment {
 
     public interface OnListFragmentInteractionListener {
 
-        void onListFragmentInteraction(String item);
+        void onListFragmentInteraction(ViewHolder viewModel);
+
         ArrayList<String> getTopicList();
     }
 

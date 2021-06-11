@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment.OnListFragmentInteractionListener;
 
@@ -36,8 +37,8 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Value currentValue = mValues.get(position);
         holder.mItem = currentValue;
-        holder.txtVideoName.setText(currentValue.getVideoFile().getVideoName() );
-        holder.txtCreationDate.setText(currentValue.getVideoFile().getDateCreated() );
+        holder.txtVideoName.setText(currentValue.getVideoFile().getVideoName());
+        holder.txtCreationDate.setText(currentValue.getVideoFile().getDateCreated());
         holder.btnSelect.setOnClickListener((View.OnClickListener) v -> {
             if (null != mListener) {
                 mListener.onListFragmentInteraction(holder.mItem);
@@ -63,7 +64,7 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
             super(view);
             mView = view;
             txtVideoName = view.findViewById(R.id.txt_video_name);
-            txtCreationDate = view.findViewById(R.id.txt_video_date);
+            txtCreationDate = view.findViewById(R.id.txt_video_date_duration);
             btnSelect = view.findViewById(R.id.btn_select_video);
         }
 
@@ -72,7 +73,6 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
             return super.toString() + " '" + txtVideoName.getText() + "'";
         }
     }
-
 
 
 }

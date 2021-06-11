@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.MediaController;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,6 +23,7 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_published_videos);
         ((FloatingActionButton) findViewById(R.id.add_video_button)).setOnClickListener(v -> onAddVideo() );
+
 
         if (findViewById(R.id.fragment_container) != null) {
 

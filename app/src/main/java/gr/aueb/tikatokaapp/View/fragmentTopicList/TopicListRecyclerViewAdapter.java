@@ -1,12 +1,16 @@
 package gr.aueb.tikatokaapp.View.fragmentTopicList;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
+
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentTopicList.TopicListFragment.OnListFragmentInteractionListener;
 
@@ -26,10 +30,11 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_video_list_item, parent, false);
+                .inflate(R.layout.fragment_topic_list_item, parent, false);
         return new ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         String currentTopic = mValues.get(position);
@@ -37,7 +42,7 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
         holder.txtTopicName.setText(currentTopic);
         holder.btnSelect.setOnClickListener((View.OnClickListener) v -> {
             if (null != mListener) {
-                mListener.onListFragmentInteraction(holder.mItem);
+                mListener.onListFragmentInteraction(holder);
             }
         });
     }
@@ -53,6 +58,7 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
         public final TextView txtTopicName;
         public final LinearLayout btnSelect;
         public String mItem;
+        public boolean SELECTED;
 
 
         public ViewHolder(View view) {
@@ -60,6 +66,7 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
             mView = view;
             txtTopicName = view.findViewById(R.id.txt_topic_name);
             btnSelect = view.findViewById(R.id.btn_select_topic);
+            SELECTED = false;
         }
 
         @Override
@@ -67,8 +74,6 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
             return super.toString() + " '" + txtTopicName.getText() + "'";
         }
     }
-
-
 
 
 }
