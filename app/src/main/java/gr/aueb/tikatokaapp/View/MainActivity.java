@@ -2,25 +2,15 @@ package gr.aueb.tikatokaapp.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.EditText;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
-
-import gr.aueb.tikatokaapp.Core.Address;
 import gr.aueb.tikatokaapp.Core.AppNode;
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.R;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,10 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
         };
-
         ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
-
-
     }
 
 

@@ -2,6 +2,7 @@ package gr.aueb.tikatokaapp.Core;
 
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +51,8 @@ public class ChannelName {
                     continue;
 
                 retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(f.getPath(), new HashMap<String, String>());
+                Log.wtf("path" , f.getAbsolutePath());
+                retriever.setDataSource(f.getAbsolutePath()+".mp4", new HashMap<String, String>());
 
                 VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
                         , String.valueOf(retriever.METADATA_KEY_CAPTURE_FRAMERATE), String.valueOf(retriever.METADATA_KEY_IMAGE_HEIGHT), String.valueOf(retriever.METADATA_KEY_IMAGE_WIDTH), null);

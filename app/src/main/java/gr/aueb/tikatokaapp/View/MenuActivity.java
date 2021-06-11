@@ -25,19 +25,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         findViewById(R.id.channel_button).setOnClickListener(v -> onChannelPressed());
-
-//        Log.wtf("ssssssss", String.valueOf(Environment.isExternalStorageManager()) );
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA} , 1  );
-
-        Log.wtf("perrr", String.valueOf(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED));
-        Log.wtf("p", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
-        Log.wtf("pp", Environment.getRootDirectory().getAbsolutePath());
-
-        File[] files = new File(Environment.getExternalStorageDirectory().getAbsolutePath()).listFiles();
-        for (File f:files)
-            Log.wtf("ggggg", f.getAbsolutePath());
-
-    }
+   }
 
 
     public void onChannelPressed(){

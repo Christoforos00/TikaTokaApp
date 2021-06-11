@@ -38,7 +38,7 @@ import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
 
 
-public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener, View.OnClickListener {
+public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
     private String OLD_VIDEO_PATH;
@@ -96,10 +96,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
             NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
             showPopUp();
 
-
         }
-
-
     }
 
     public void showPopUp() {
@@ -111,24 +108,25 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         Button uploadBtn = (Button) customLayout.findViewById(R.id.enter_hashtags_btn);
         EditText videoName = (EditText) customLayout.findViewById(R.id.videoName);
         EditText hashtags = (EditText) customLayout.findViewById(R.id.hashtags);
-
-        VIDEO_NAME = videoName.getText().toString();
-        HASHTAGS = hashtags.getText().toString();
-
-        uploadBtn.setOnClickListener(this);
+        uploadBtn.setOnClickListener(v -> {
+            VIDEO_NAME = videoName.getText().toString();
+            HASHTAGS = hashtags.getText().toString();
+            uploadRecordedVideo();
+        });
 
         dialog.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void uploadRecordedVideo() {
-        ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
+
         try {
             transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME + ".mp4"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         deleteRecursive(new File(OLD_VIDEO_PATH));
+        ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
     }
 
 
@@ -188,11 +186,4 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.enter_hashtags_btn) {
-            uploadRecordedVideo();
-        }
-    }
 }

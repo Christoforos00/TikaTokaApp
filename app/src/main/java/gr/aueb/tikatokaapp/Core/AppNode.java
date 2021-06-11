@@ -182,7 +182,6 @@ public class AppNode implements Publisher, Consumer {
         notifyEveryBroker(false, addedHashtags);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void addTopics(String videoFileName, String s) throws IOException {
         String[] topics = s.split(",");
         appendInPubTopicsFile(videoFileName, topics);
@@ -235,11 +234,12 @@ public class AppNode implements Publisher, Consumer {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public void uploadVideo(String videoFileName, String hashtags) {
         String PATH = outDir + File.separator + "videos" + File.separator + videoFileName;
         try {
-            boolean result = Files.exists(Paths.get(PATH));
+//            boolean result = Files.exists(Paths.get(PATH));
+            boolean result = true;
             if (result) {
                 Scanner scanner = new Scanner(new FileReader(outDir + File.separator + "topics.txt"));
                 while (scanner.hasNextLine()) {
@@ -258,10 +258,36 @@ public class AppNode implements Publisher, Consumer {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public void appendInPubTopicsFile(String videoFileName, String[] topics) throws IOException {
+//        FileWriter fw = new FileWriter(outDir + File.separator + "topics.txt", true); //the true will append the new data
+//        byte[] bytes = Files.readAllBytes(Paths.get(outDir + File.separator + "topics.txt"));
+//        String text = videoFileName + ":";
+//        for (String topic : topics)
+//            text += topic + ",";
+//        text += channelname.getChannelName();
+//        if (bytes.length == 0 || bytes[bytes.length - 1] == '\n')
+//            fw.write(text);
+//        else
+//            fw.write("\n" + text);
+//        fw.close();
+//    }
+
+
     public void appendInPubTopicsFile(String videoFileName, String[] topics) throws IOException {
         FileWriter fw = new FileWriter(outDir + File.separator + "topics.txt", true); //the true will append the new data
-        byte[] bytes = Files.readAllBytes(Paths.get(outDir + File.separator + "topics.txt"));
+
+        File file = new File(outDir + File.separator + "topics.txt");
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
         String text = videoFileName + ":";
         for (String topic : topics)
             text += topic + ",";
@@ -272,6 +298,7 @@ public class AppNode implements Publisher, Consumer {
             fw.write("\n" + text);
         fw.close();
     }
+
 
 
     public void removeFromPubTopicsFile(String videoFileName) throws IOException {
@@ -663,8 +690,8 @@ public class AppNode implements Publisher, Consumer {
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void run() {
             Scanner scan = new Scanner(System.in);
-
             String s;
+
             while (RUNNING) {
                 System.out.println("MENU\n1| Upload new Video\n2| Delete a Video\n3| Subscribe to topic\n4| Unsubscribe from topic\n5| Display your subscriptions\n6| Display your published videos\n0| Exit");
                 System.out.print("INPUT:");
