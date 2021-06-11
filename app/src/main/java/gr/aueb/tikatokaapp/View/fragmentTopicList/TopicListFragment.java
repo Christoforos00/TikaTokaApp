@@ -1,4 +1,4 @@
-package gr.aueb.tikatokaapp.View.fragmentList;
+package gr.aueb.tikatokaapp.View.fragmentTopicList;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,23 +10,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-
-import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
 
-public class VideoListFragment extends Fragment {
+
+public class TopicListFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 4;
+    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    public VideoListFragment() { }
+    public TopicListFragment() { }
 
     @SuppressWarnings("unused")
-    public static VideoListFragment newInstance(int columnCount) {
-        VideoListFragment fragment = new VideoListFragment();
+    public static TopicListFragment newInstance(int columnCount) {
+        TopicListFragment fragment = new TopicListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -42,11 +40,10 @@ public class VideoListFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_video_list, container, false);
-        ArrayList<Value> videoList = mListener.getVideoList();
+        View view = inflater.inflate(R.layout.fragment_topic_list, container, false);
+        ArrayList<String> topicList = mListener.getTopicList();
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -55,11 +52,10 @@ public class VideoListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new VideoListRecyclerViewAdapter(new ArrayList<Value>(videoList), mListener));
+            recyclerView.setAdapter(new TopicListRecyclerViewAdapter(new ArrayList<String>(topicList), mListener));
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -79,12 +75,10 @@ public class VideoListFragment extends Fragment {
         mListener = null;
     }
 
-
     public interface OnListFragmentInteractionListener {
 
-        void onListFragmentInteraction(Value item);
-        ArrayList<Value> getVideoList();
+        void onListFragmentInteraction(String item);
+        ArrayList<String> getTopicList();
     }
-
 
 }

@@ -19,7 +19,7 @@ import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.Core.VideoFile;
 import gr.aueb.tikatokaapp.R;
-import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
+import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 
 public class FeedActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener{
 

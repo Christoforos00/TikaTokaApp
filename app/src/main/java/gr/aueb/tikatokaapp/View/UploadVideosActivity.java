@@ -7,25 +7,17 @@ import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,12 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
-import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
+import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 
 
 public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {

@@ -1,15 +1,14 @@
-package gr.aueb.tikatokaapp.View.fragmentList;
+package gr.aueb.tikatokaapp.View.fragmentVideoList;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import gr.aueb.tikatokaapp.R;
-import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment.OnListFragmentInteractionListener;
+import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment.OnListFragmentInteractionListener;
 
 import java.util.ArrayList;
 

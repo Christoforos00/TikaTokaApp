@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
-import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
+import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 
 public class PublishedVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener{
 
