@@ -33,12 +33,12 @@ public class AppNode implements Publisher, Consumer {
         node.init();
     }
 
-    public AppNode(String ip, int port, String channel, InputStream brokersIn , String videoDir) throws InterruptedException {
+    public AppNode(String ip, int port, String channel, InputStream brokersIn, String videoDir) throws InterruptedException {
         this.address = new Address(ip, port);
         String projectDir = videoDir;
 
         this.outDir = projectDir + File.separator + channel + "Files" + File.separator + "publishedVideos";
-        this.inDir =  projectDir + File.separator + channel + "Files" + File.separator + "consumedVideos";
+        this.inDir = projectDir + File.separator + channel + "Files" + File.separator + "consumedVideos";
         this.channelname = new ChannelName(channel);
         loadFolders();
         loadBrokersFile(brokersIn);
@@ -50,16 +50,16 @@ public class AppNode implements Publisher, Consumer {
         TimeUnit.SECONDS.sleep(1);
     }
 
-    public String getPubDir(){
+    public String getPubDir() {
         return outDir;
     }
 
     public AppNode(String ip, int port, String channel) throws InterruptedException {
         this.address = new Address(ip, port);
-        String projectDir = getProjectDir(System.getProperty("user.dir") );
-        this.srcDir = projectDir + File.separator + "src" ;
+        String projectDir = getProjectDir(System.getProperty("user.dir"));
+        this.srcDir = projectDir + File.separator + "src";
         this.outDir = projectDir + File.separator + channel + "Files" + File.separator + "publishedVideos";
-        this.inDir =  projectDir + File.separator + channel + "Files" + File.separator + "consumedVideos";
+        this.inDir = projectDir + File.separator + channel + "Files" + File.separator + "consumedVideos";
         this.channelname = new ChannelName(channel);
         loadFolders();
         loadBrokersFile();
@@ -182,6 +182,14 @@ public class AppNode implements Publisher, Consumer {
         notifyEveryBroker(false, addedHashtags);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addTopics(String videoFileName, String s) throws IOException {
+        String[] topics = s.split(",");
+        appendInPubTopicsFile(videoFileName, topics);
+        ArrayList<String> addedHashtags = loadPublisherVideos();
+        notifyEveryBroker(false, addedHashtags);
+    }
+
     @Override
     public void removeTopics(String videoFileName) throws IOException {
         removeFromPubTopicsFile(videoFileName);
@@ -219,6 +227,29 @@ public class AppNode implements Publisher, Consumer {
                     }
                 }
                 addTopics(videoFileName);
+            } else {
+                System.out.println("[SYSTEM] >>> Sorry, I didn't find any video file with name: " + videoFileName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadVideo(String videoFileName, String hashtags) {
+        String PATH = outDir + File.separator + "videos" + File.separator + videoFileName;
+        try {
+            boolean result = Files.exists(Paths.get(PATH));
+            if (result) {
+                Scanner scanner = new Scanner(new FileReader(outDir + File.separator + "topics.txt"));
+                while (scanner.hasNextLine()) {
+                    String[] parts = scanner.nextLine().split(":");
+                    if (parts[0].equals(videoFileName)) {
+                        System.out.println("[SYSTEM] >>> YOU HAVE ALREADY UPLOADED THIS VIDEO.");
+                        return;
+                    }
+                }
+                addTopics(videoFileName, hashtags);
             } else {
                 System.out.println("[SYSTEM] >>> Sorry, I didn't find any video file with name: " + videoFileName);
             }
@@ -328,7 +359,7 @@ public class AppNode implements Publisher, Consumer {
     }
 
     @Override
-    public void push(Value video, ObjectInputStream in, ObjectOutputStream out){
+    public void push(Value video, ObjectInputStream in, ObjectOutputStream out) {
         try {
             ArrayList<Value> chunks = generateChunks(video);
             String videoData = video.getName() + ":" + video.getChannelName() + ":" + chunks.size();            // dog_video.mp4:GiorgosChannel:10
@@ -396,8 +427,8 @@ public class AppNode implements Publisher, Consumer {
 
     @Override
     public void register(String topic) {
-        if (subscribedTopics.contains(topic)){
-            System.out.println("ALREADY SUBSCRIBED TO: "+ topic);
+        if (subscribedTopics.contains(topic)) {
+            System.out.println("ALREADY SUBSCRIBED TO: " + topic);
             return;
         }
 
@@ -409,11 +440,10 @@ public class AppNode implements Publisher, Consumer {
                 }
                 appendSubscriptionsFile(topic);
             }
-        }else{
-            System.out.println("CANNOT FIND TOPIC: "+ topic);
+        } else {
+            System.out.println("CANNOT FIND TOPIC: " + topic);
         }
     }
-
 
 
     public void appendSubTopicsFile(String name, String channel) {
@@ -504,9 +534,9 @@ public class AppNode implements Publisher, Consumer {
         synchronized (subscribedTopics) {
             subscribedTopics.remove(topic);
         }
-        Address brokerAddress =  getResponsibleBroker(topic);
-        if (brokerAddress==null){
-            System.out.println("CANNOT UNSUBRCRIBE FROM: "+ topic);
+        Address brokerAddress = getResponsibleBroker(topic);
+        if (brokerAddress == null) {
+            System.out.println("CANNOT UNSUBRCRIBE FROM: " + topic);
             return;
         }
 
@@ -563,7 +593,7 @@ public class AppNode implements Publisher, Consumer {
     @Override
     public void playData(String topic) {
         Address brokerAddress = getResponsibleBroker(topic);
-        if (brokerAddress==null) {
+        if (brokerAddress == null) {
             System.out.println("CANNOT ACCESS: " + topic);
             return;
         }
@@ -581,7 +611,7 @@ public class AppNode implements Publisher, Consumer {
             outputStream.flush();
 
             String str = (String) inputStream.readObject();
-            while(str.equals("MORE_PUBS")){
+            while (str.equals("MORE_PUBS")) {
                 downloadVideos(inputStream, outputStream);
                 str = (String) inputStream.readObject();
             }
@@ -627,7 +657,8 @@ public class AppNode implements Publisher, Consumer {
 
     public class HandleMenu extends Thread {
 
-        public HandleMenu() {}
+        public HandleMenu() {
+        }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void run() {
@@ -674,7 +705,7 @@ public class AppNode implements Publisher, Consumer {
                     } else {
                         System.out.print("WRONG INPUT,TRY AGAIN " + "\n" + "\n");
                     }
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.print("WRONG INPUT,TRY AGAIN " + "\n" + "\n");
                 }
             }

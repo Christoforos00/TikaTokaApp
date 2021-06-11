@@ -8,9 +8,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -32,9 +36,11 @@ import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
 
 
-public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {
+public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener, View.OnClickListener {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
+    private String VIDEO_NAME;
+    private String HASHTAGS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,21 +87,45 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
 
             Uri vid = data.getData();
             videoPath = getRealPathFromURI(vid);
             String newPath = ConnectedAppNode.getAppNode().getPubDir();
             try {
-                transferVideo(new File(videoPath), new File(newPath+"/videos/test_video.mp4"));
+                transferVideo(new File(videoPath), new File(newPath + "/videos/test_video.mp4"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             deleteRecursive(new File(videoPath));
+            showPopUp();
         }
 
 
     }
+
+    public void showPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customLayout = getLayoutInflater().inflate(R.layout.enter_hashtags_popup, null);
+        builder.setView(customLayout);
+        AlertDialog dialog = builder.create();
+
+        Button uploadBtn = (Button) customLayout.findViewById(R.id.enter_hashtags_btn);
+        EditText videoName = (EditText) customLayout.findViewById(R.id.videoName);
+        EditText hashtags = (EditText) customLayout.findViewById(R.id.hashtags);
+
+        VIDEO_NAME = videoName.getText().toString();
+        HASHTAGS = hashtags.getText().toString();
+
+        uploadBtn.setOnClickListener(this);
+
+        dialog.show();
+    }
+
+    private void uploadRecordedVideo() {
+
+    }
+
 
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -150,6 +180,13 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     public void getCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.enter_hashtags_btn) {
+            uploadRecordedVideo();
         }
     }
 }

@@ -7,4 +7,6 @@
     <string name="videoname">VideoName</string>
     <string name="date">Date</string>
     <string name="available">AVAILABLE VIDEOS</string>
+    <string name="add_hashtags">ADD HASHTAGS</string>
+    <string name="upload">upload</string>
 </resources>
