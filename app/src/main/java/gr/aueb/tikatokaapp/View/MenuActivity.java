@@ -25,10 +25,22 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         findViewById(R.id.channel_button).setOnClickListener(v -> onChannelPressed());
+        findViewById(R.id.feed_button).setOnClickListener(v -> onChannelPressed());
+        findViewById(R.id.subs_button).setOnClickListener(v -> onChannelPressed());
    }
 
 
     public void onChannelPressed(){
+        Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
+        startActivity(intent);
+    }
+
+    public void onFeedPressed(){
+        Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
+        startActivity(intent);
+    }
+
+    public void onSubscriptionsPressed(){
         Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
         startActivity(intent);
     }

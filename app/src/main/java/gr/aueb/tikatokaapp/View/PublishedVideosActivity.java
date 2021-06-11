@@ -34,7 +34,6 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
                     .add(R.id.fragment_container, videoListFragment)
                     .commit();
         }
-
     }
 
 

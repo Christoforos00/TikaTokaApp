@@ -54,6 +54,8 @@ public class AppNode implements Publisher, Consumer {
         return outDir;
     }
 
+    public String getSubDir(){ return inDir;}
+
     public AppNode(String ip, int port, String channel) throws InterruptedException {
         this.address = new Address(ip, port);
         String projectDir = getProjectDir(System.getProperty("user.dir"));
@@ -174,8 +176,7 @@ public class AppNode implements Publisher, Consumer {
 
     ///////////////////////////////////////////////     PUBLISHER       ///////////////////////////////////////////////////////////////////
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
+
     public void addTopics(String videoFileName) throws IOException {
         Scanner scan = new Scanner(System.in);
         System.out.print("ENTER THE HASHTAGS OF YOUR VIDEO, SEPARATED BY COMMAS : ");
@@ -306,7 +307,6 @@ public class AppNode implements Publisher, Consumer {
 
 
     public void removeFromPubTopicsFile(String videoFileName) throws IOException {
-        Scanner scanner = new Scanner(new FileReader(outDir + File.separator + "topics.txt"));
         File inputFile = new File(outDir + File.separator + "topics.txt");
         File tempFile = new File(outDir + File.separator + "topics2.txt");
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));

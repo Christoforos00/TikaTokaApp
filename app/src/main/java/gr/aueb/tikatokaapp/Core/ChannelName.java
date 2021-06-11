@@ -40,7 +40,6 @@ public class ChannelName {
         try {
 
             Scanner scanner = new Scanner(new FileReader(dir + File.separator + "topics.txt"));
-            String line;
             File f;
 
             while (scanner.hasNextLine()) {
