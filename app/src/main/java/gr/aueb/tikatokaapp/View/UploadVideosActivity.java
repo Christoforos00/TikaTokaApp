@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -39,6 +41,8 @@ import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
 public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener, View.OnClickListener {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
+    private String OLD_VIDEO_PATH;
+    private String NEW_VIDEO_PATH;
     private String VIDEO_NAME;
     private String HASHTAGS;
 
@@ -82,23 +86,17 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         startActivityForResult(intent, 1);
     }
 
-    private String videoPath = "";
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
 
             Uri vid = data.getData();
-            videoPath = getRealPathFromURI(vid);
-            String newPath = ConnectedAppNode.getAppNode().getPubDir();
-            try {
-                transferVideo(new File(videoPath), new File(newPath + "/videos/test_video.mp4"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            deleteRecursive(new File(videoPath));
+            OLD_VIDEO_PATH = getRealPathFromURI(vid);
+            NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
             showPopUp();
+
+
         }
 
 
@@ -122,8 +120,15 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         dialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void uploadRecordedVideo() {
-
+        ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
+        try {
+            transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME + ".mp4"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        deleteRecursive(new File(OLD_VIDEO_PATH));
     }
 
 
@@ -183,6 +188,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.enter_hashtags_btn) {
