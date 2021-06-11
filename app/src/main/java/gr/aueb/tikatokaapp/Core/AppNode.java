@@ -33,6 +33,27 @@ public class AppNode implements Publisher, Consumer {
         node.init();
     }
 
+    public AppNode(String ip, int port, String channel, InputStream brokersIn , String videoDir) throws InterruptedException {
+        this.address = new Address(ip, port);
+        String projectDir = videoDir;
+
+        this.outDir = projectDir + File.separator + channel + "Files" + File.separator + "publishedVideos";
+        this.inDir =  projectDir + File.separator + channel + "Files" + File.separator + "consumedVideos";
+        this.channelname = new ChannelName(channel);
+        loadFolders();
+        loadBrokersFile(brokersIn);
+        HandleTopicUpdates updatesHandler = new HandleTopicUpdates();
+        updatesHandler.start();
+        loadPublisherVideos();
+        loadSubscriptions();
+        notifyEveryBroker(false, getTopics());
+        TimeUnit.SECONDS.sleep(1);
+    }
+
+    public String getPubDir(){
+        return outDir;
+    }
+
     public AppNode(String ip, int port, String channel) throws InterruptedException {
         this.address = new Address(ip, port);
         String projectDir = getProjectDir(System.getProperty("user.dir") );
@@ -67,8 +88,8 @@ public class AppNode implements Publisher, Consumer {
             f.mkdirs();
 
         try {
-            f = new File(srcDir + File.separator + "brokers.txt");
-            f.createNewFile();
+//            f = new File(srcDir + File.separator + "brokers.txt");
+//            f.createNewFile();
             f = new File(outDir + File.separator + "topics.txt");
             f.createNewFile();
             f = new File(inDir + File.separator + "topics.txt");
@@ -252,6 +273,16 @@ public class AppNode implements Publisher, Consumer {
             e.printStackTrace();
         }
     }
+
+    public void loadBrokersFile(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream);
+        while (scanner.hasNextLine()) {
+            String[] parts = scanner.nextLine().split(":");
+            Address readAddress = new Address(parts[0], Integer.parseInt(parts[1]));
+            brokers.add(readAddress);
+        }
+    }
+
 
     @Override
     public void notifyEveryBroker(boolean deletion, ArrayList<String> topics) {

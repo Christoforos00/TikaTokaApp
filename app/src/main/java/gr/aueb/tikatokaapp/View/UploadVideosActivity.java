@@ -12,10 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentList.VideoListFragment;
@@ -61,7 +64,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
 
     public void onRec(){
         Intent intent = new Intent( MediaStore.ACTION_VIDEO_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, Environment.getExternalStorageDirectory());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,Environment.getExternalStorageDirectory() );
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT , 60);
         startActivityForResult(intent, 1);
     }
