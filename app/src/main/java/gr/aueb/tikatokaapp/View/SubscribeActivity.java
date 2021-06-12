@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +21,7 @@ import gr.aueb.tikatokaapp.View.fragmentTopicList.TopicListRecyclerViewAdapter.V
 public class SubscribeActivity extends AppCompatActivity implements TopicListFragment.OnListFragmentInteractionListener {
 
     private static boolean isSelected = false;
-//    private ArrayList<String> topicsSelected = new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE"));
+    private ArrayList<String> topicList = new ArrayList<>();
     private ArrayList<String> topicsSelected = ConnectedAppNode.getAppNode().getSubscribedTopics();
     private Set<String> newSubs;
     private Set<String> newUnsubs;
@@ -28,8 +29,16 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TopicRunner run = new TopicRunner();
+        run.execute();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
+
 
         findViewById(R.id.button).setOnClickListener(v -> onDone());
 
@@ -56,8 +65,8 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
         newUnsubs.removeAll(currentSubs);
         newSubs.removeAll(previousSubs);
 
-        Log.wtf("subs",newSubs.toString());
-        Log.wtf("unsubs",newUnsubs.toString());
+        Log.wtf("subs", newSubs.toString());
+        Log.wtf("unsubs", newUnsubs.toString());
 
         SubscribeRunner run = new SubscribeRunner();
         run.execute();
@@ -73,13 +82,13 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
             topicsSelected.add(topic);
         else
             topicsSelected.remove(topic);
-        Log.wtf("sel",topicsSelected.toString());
+        Log.wtf("sel", topicsSelected.toString());
     }
 
     //TODO return available topics ( from online pubs )
     @Override
     public ArrayList<String> getTopicList() {
-        return ConnectedAppNode.getAppNode().findAllTopics();
+        return topicList;
 //        return new ArrayList<>(Arrays.asList("#VIRAL", "#DOG", "#DOGGO", "#CATTO", "#BOONK", "#GANG", "#SHIE"));
     }
 
@@ -95,7 +104,22 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
 
 
         @Override
-        protected void onPostExecute(String result) {  }
+        protected void onPostExecute(String result) {
+        }
     }
 
+
+    private class TopicRunner extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            topicList = ConnectedAppNode.getAppNode().findAllTopics();
+            return "1";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+    }
 }
