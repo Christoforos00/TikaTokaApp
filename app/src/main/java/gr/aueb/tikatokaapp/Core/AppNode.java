@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.net.*;
 import java.io.*;
 import java.nio.file.*;
@@ -567,6 +569,7 @@ public class AppNode implements Publisher, Consumer {
     public Map<String, Address> requestTopicToBrokerMap(Address brokerAddress) {
         Map<String, Address> map = null;
         try {
+            System.out.println("req1 " + brokerAddress);
             Socket socket = new Socket(brokerAddress.getIp(), brokerAddress.getPort());
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             outputStream.writeObject(new Message(address, "TOPIC_TO_BROKER_MAP"));
@@ -662,6 +665,7 @@ public class AppNode implements Publisher, Consumer {
         ObjectInputStream inputStream = null;
         ObjectOutputStream outputStream = null;
         try {
+            System.out.println(brokerAddress);
             socket = new Socket(brokerAddress.getIp(), brokerAddress.getPort());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());

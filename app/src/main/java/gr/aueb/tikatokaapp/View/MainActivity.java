@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
                 Log.wtf("ippp", ip);
-                ConnectedAppNode.setAppNode(new AppNode(getIp(), 5000, userName, getAssets().open(String.format("brokers.txt")), Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()));
+                ConnectedAppNode.setAppNode(new AppNode(ip, 50001, userName, getAssets().open(String.format("brokers.txt")), Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath()));
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }

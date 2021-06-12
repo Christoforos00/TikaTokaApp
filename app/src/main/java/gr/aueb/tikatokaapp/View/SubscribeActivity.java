@@ -108,6 +108,7 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
 
         @Override
         protected String doInBackground(String... strings) {
+            Log.wtf("backg","aa");
             topicList = ConnectedAppNode.getAppNode().findAllTopics();
             return "1";
         }
