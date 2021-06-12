@@ -46,7 +46,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_videos);
 
-        ((ImageButton) findViewById(R.id.rec_button)).setOnClickListener(v -> onRec());
+        findViewById(R.id.rec_button).setOnClickListener(v -> onRec());
 
         if (findViewById(R.id.fragment_container) != null) {
 

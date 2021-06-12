@@ -1,6 +1,7 @@
 package gr.aueb.tikatokaapp.View.fragmentTopicList;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentTopicList.TopicListFragment.OnListFragmentInteractionListener;
 
@@ -40,11 +43,19 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
         String currentTopic = mValues.get(position);
         holder.mItem = currentTopic;
         holder.txtTopicName.setText(currentTopic);
-        holder.btnSelect.setOnClickListener((View.OnClickListener) v -> {
+        holder.btnSelect.setOnClickListener(v -> {
             if (null != mListener) {
-                mListener.onListFragmentInteraction(holder);
+                mListener.onListFragmentInteraction(holder,  holder.mItem);
             }
         });
+
+        ArrayList<String> sub = new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE"));
+//        if (ConnectedAppNode.getAppNode().getSubscribedTopics().contains(currentTopic)){
+        if (sub.contains(currentTopic)){
+            Log.wtf("saaaa","selected");
+            holder.setSelected();
+        }
+
     }
 
 
@@ -67,6 +78,21 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
             txtTopicName = view.findViewById(R.id.txt_topic_name);
             btnSelect = view.findViewById(R.id.btn_select_topic);
             SELECTED = false;
+        }
+
+        public void clicked(){
+            if (!SELECTED) {
+                setSelected();
+            } else {
+                btnSelect.setBackgroundColor(mView.getContext().getResources().getColor(R.color.melon));
+                btnSelect.setBackgroundResource(R.drawable.border);
+                SELECTED = false;
+            }
+        }
+
+        public void setSelected(){
+            btnSelect.setBackgroundColor(mView.getContext().getResources().getColor(R.color.transparent_custom));
+            SELECTED = true;
         }
 
         @Override

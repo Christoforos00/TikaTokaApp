@@ -14,4 +14,5 @@
     <string name="hashtags">#HASHTAGS</string>
     <string name="subscribe">SUBSCRIBE</string>
     <string name="available_topics">Available Topics</string>
+    <string name="done">DONE</string>
 </resources>

@@ -46,7 +46,7 @@ public class AppNode implements Publisher, Consumer {
         updatesHandler.start();
         loadPublisherVideos();
         loadSubscriptions();
-        notifyEveryBroker(false, getTopics());
+        notifyEveryBroker(false, getPublishedTopics());
         TimeUnit.SECONDS.sleep(1);
     }
 
@@ -69,7 +69,7 @@ public class AppNode implements Publisher, Consumer {
         updatesHandler.start();
         loadPublisherVideos();
         loadSubscriptions();
-        notifyEveryBroker(false, getTopics());
+        notifyEveryBroker(false, getPublishedTopics());
         TimeUnit.SECONDS.sleep(1);
     }
 
@@ -111,8 +111,17 @@ public class AppNode implements Publisher, Consumer {
         return channelname.updateChannel(outDir);
     }
 
-    public ArrayList<String> getTopics() {
+    public ArrayList<String> getPublishedTopics() {
         return channelname.getAllHashtags();
+    }
+
+    public ArrayList<String> getSubscribedTopics() {
+        return new ArrayList<>(subscribedTopics);
+    }
+
+    public ArrayList<String> findAllTopics(){
+        topicToBroker = requestTopicToBrokerMap(brokers.get(0));
+        return new ArrayList<String>(topicToBroker.keySet());
     }
 
     public ArrayList<Value> getVideos(String hashtag) {
@@ -130,6 +139,7 @@ public class AppNode implements Publisher, Consumer {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void init() {
@@ -156,7 +166,7 @@ public class AppNode implements Publisher, Consumer {
                 HandleBroker handleBroker = new HandleBroker(broker);
                 handleBroker.start();
             }
-            notifyEveryBroker(true, getTopics());
+            notifyEveryBroker(true, getPublishedTopics());
             server.close();
             System.exit(0);
 
@@ -449,12 +459,11 @@ public class AppNode implements Publisher, Consumer {
 
     public Address getResponsibleBroker(String topic) {
         if (!topicToBroker.containsKey(topic)) {
-            System.out.println("[SYSTEM] >>>TOPIC NOT FOUND..REQUESTING TOPIC MAP!");   //update topicToBroker
+            System.out.println("[SYSTEM] >>>TOPIC INITIALLY NOT FOUND..REQUESTING TOPIC MAP!");   //update topicToBroker
             topicToBroker = requestTopicToBrokerMap(brokers.get(0));
         }
         return topicToBroker.get(topic);
     }
-
 
     @Override
     public void register(String topic) {
@@ -740,8 +749,8 @@ public class AppNode implements Publisher, Consumer {
                     System.out.print("WRONG INPUT,TRY AGAIN " + "\n" + "\n");
                 }
             }
-            System.out.println(getTopics());
-            notifyEveryBroker(true, getTopics());
+            System.out.println(getPublishedTopics());
+            notifyEveryBroker(true, getPublishedTopics());
             System.exit(0);
         }
     }
@@ -771,7 +780,7 @@ public class AppNode implements Publisher, Consumer {
                     playData(topic);
                 }
             }
-            notifyEveryBroker(true, getTopics());
+            notifyEveryBroker(true, getPublishedTopics());
             System.exit(0);
         }
     }

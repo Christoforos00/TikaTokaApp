@@ -82,7 +82,7 @@ public class TopicListFragment extends Fragment {
 
     public interface OnListFragmentInteractionListener {
 
-        void onListFragmentInteraction(ViewHolder viewModel);
+        void onListFragmentInteraction(ViewHolder viewModel, String topic);
 
         ArrayList<String> getTopicList();
     }
