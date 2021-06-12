@@ -485,6 +485,12 @@ public class AppNode implements Publisher, Consumer {
         }
     }
 
+    public void registerAll(Set<String> topics){
+        for (String topic : topics)
+            register(topic);
+    }
+
+
 
     public void appendSubTopicsFile(String name, String channel) {
         try {
@@ -594,6 +600,12 @@ public class AppNode implements Publisher, Consumer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void disconnectAll(Set<String> topics){
+        for (String topic : topics)
+            disconnect(topic);
     }
 
 
@@ -749,7 +761,6 @@ public class AppNode implements Publisher, Consumer {
                     System.out.print("WRONG INPUT,TRY AGAIN " + "\n" + "\n");
                 }
             }
-            System.out.println(getPublishedTopics());
             notifyEveryBroker(true, getPublishedTopics());
             System.exit(0);
         }

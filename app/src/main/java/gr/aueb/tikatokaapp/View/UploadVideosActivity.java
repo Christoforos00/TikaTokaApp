@@ -131,8 +131,8 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
             e.printStackTrace();
         }
         deleteRecursive(new File(OLD_VIDEO_PATH));
-        ClientRunner runn = new ClientRunner();
-        runn.execute();
+        UploadRunner run = new UploadRunner();
+        run.execute();
     }
 
 
@@ -195,7 +195,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
 
 
 
-    private class ClientRunner extends AsyncTask<String, String, String> {
+    private class UploadRunner extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {

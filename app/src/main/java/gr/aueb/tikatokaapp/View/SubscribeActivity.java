@@ -3,6 +3,7 @@ package gr.aueb.tikatokaapp.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,7 +21,9 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
 
     private static boolean isSelected = false;
     private ArrayList<String> topicsSelected = new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE"));
-//    private ArrayList<String> topicsSelected = ConnectedAppNode.getAppNode().getSubscribedTopics();
+    private Set<String> newSubs;
+    private Set<String> newUnsubs;
+    //    private ArrayList<String> topicsSelected = ConnectedAppNode.getAppNode().getSubscribedTopics();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +48,19 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
     private void onDone() {
 //        Set<String> previousSubs = new HashSet<>(ConnectedAppNode.getAppNode().getSubscribedTopics());
         Set<String> previousSubs = new HashSet<>(new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE")));
-
-        Set<String> newUnsubs = new HashSet<>(previousSubs);
+        newUnsubs = new HashSet<>(previousSubs);
         Set<String> currentSubs = new HashSet<>(topicsSelected);
-        Set<String> newSubs = new HashSet<>(currentSubs);
+        newSubs = new HashSet<>(currentSubs);
 
         newUnsubs.removeAll(currentSubs);
         newSubs.removeAll(previousSubs);
 
         Log.wtf("subs",newSubs.toString());
         Log.wtf("unsubs",newUnsubs.toString());
+
+        SubscribeRunner run = new SubscribeRunner();
+        run.execute();
+
         Intent intent = new Intent(SubscribeActivity.this, MenuActivity.class);
         startActivity(intent);
     }
@@ -74,6 +80,21 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
     public ArrayList<String> getTopicList() {
 //        return ConnectedAppNode.getAppNode().findAllTopics();
         return new ArrayList<>(Arrays.asList("#VIRAL", "#DOG", "#DOGGO", "#CATTO", "#BOONK", "#GANG", "#SHIE"));
+    }
+
+
+    private class SubscribeRunner extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            ConnectedAppNode.getAppNode().disconnectAll(newUnsubs);
+            ConnectedAppNode.getAppNode().registerAll(newSubs);
+            return "1";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {  }
     }
 
 }
