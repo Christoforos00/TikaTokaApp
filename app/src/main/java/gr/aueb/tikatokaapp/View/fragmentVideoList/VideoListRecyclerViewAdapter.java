@@ -3,6 +3,7 @@ package gr.aueb.tikatokaapp.View.fragmentVideoList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
         public final TextView txtVideoName;
         public final TextView txtCreationDate;
         public final LinearLayout btnSelect;
+        private final ImageView imageView;
         public Value mItem;
 
 
@@ -66,6 +68,7 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
             txtVideoName = view.findViewById(R.id.txt_video_name);
             txtCreationDate = view.findViewById(R.id.txt_video_date_duration);
             btnSelect = view.findViewById(R.id.btn_select_video);
+            imageView = view.findViewById(R.id.video_thumbnail);
         }
 
         @Override

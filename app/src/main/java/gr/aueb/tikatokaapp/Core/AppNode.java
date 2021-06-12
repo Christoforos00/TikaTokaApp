@@ -1,6 +1,7 @@
 package gr.aueb.tikatokaapp.Core;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -21,17 +22,17 @@ public class AppNode implements Publisher, Consumer {
     private final ArrayList<Address> brokers = new ArrayList<Address>();
     private final List<String> subscribedTopics = Collections.synchronizedList(new ArrayList<String>());
 
-    public static void main(String args[]) throws InterruptedException, UnknownHostException {
-
-        // User enters the IP of his/her machine, and a Port from terminal and the name of his/her channel.
-        String IP = args[0];
-        int PORT = Integer.parseInt(args[1]);
-        String channelName = args[2];
-
-        // We start the appNode.
-        AppNode node = new AppNode(IP, PORT, channelName);
-        node.init();
-    }
+//    public static void main(String args[]) throws InterruptedException, UnknownHostException {
+//
+//        // User enters the IP of his/her machine, and a Port from terminal and the name of his/her channel.
+//        String IP = args[0];
+//        int PORT = Integer.parseInt(args[1]);
+//        String channelName = args[2];
+//
+//        // We start the appNode.
+//        AppNode node = new AppNode(IP, PORT, channelName);
+//        node.init();
+//    }
 
     public AppNode(String ip, int port, String channel, InputStream brokersIn, String videoDir) throws InterruptedException {
         this.address = new Address(ip, port);
@@ -48,13 +49,16 @@ public class AppNode implements Publisher, Consumer {
         loadSubscriptions();
         notifyEveryBroker(false, getPublishedTopics());
         TimeUnit.SECONDS.sleep(1);
+        connectParallel();
     }
 
     public String getPubDir() {
         return outDir;
     }
 
-    public String getSubDir(){ return inDir;}
+    public String getSubDir() {
+        return inDir;
+    }
 
     public AppNode(String ip, int port, String channel) throws InterruptedException {
         this.address = new Address(ip, port);
@@ -73,7 +77,7 @@ public class AppNode implements Publisher, Consumer {
         TimeUnit.SECONDS.sleep(1);
     }
 
-    public String getName(){
+    public String getName() {
         return channelname.getChannelName();
     }
 
@@ -119,7 +123,7 @@ public class AppNode implements Publisher, Consumer {
         return new ArrayList<>(subscribedTopics);
     }
 
-    public ArrayList<String> findAllTopics(){
+    public ArrayList<String> findAllTopics() {
         topicToBroker = requestTopicToBrokerMap(brokers.get(0));
         return new ArrayList<String>(topicToBroker.keySet());
     }
@@ -201,6 +205,7 @@ public class AppNode implements Publisher, Consumer {
         String[] topics = s.split(",");
         appendInPubTopicsFile(videoFileName, topics);
         ArrayList<String> addedHashtags = loadPublisherVideos();
+        Log.wtf("ADD TOPICS", s);
         notifyEveryBroker(false, addedHashtags);
     }
 
@@ -253,6 +258,7 @@ public class AppNode implements Publisher, Consumer {
     public void uploadVideo(String videoFileName, String hashtags) {
         String PATH = outDir + File.separator + "videos" + File.separator + videoFileName;
         try {
+
 //            boolean result = Files.exists(Paths.get(PATH));
             boolean result = true;
             if (result) {
@@ -264,6 +270,7 @@ public class AppNode implements Publisher, Consumer {
                         return;
                     }
                 }
+                Log.wtf("UPLOAD", videoFileName);
                 addTopics(videoFileName, hashtags);
             } else {
                 System.out.println("[SYSTEM] >>> Sorry, I didn't find any video file with name: " + videoFileName);
@@ -299,7 +306,7 @@ public class AppNode implements Publisher, Consumer {
             BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
             buf.read(bytes, 0, bytes.length);
             buf.close();
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -313,7 +320,6 @@ public class AppNode implements Publisher, Consumer {
             fw.write("\n" + text);
         fw.close();
     }
-
 
 
     public void removeFromPubTopicsFile(String videoFileName) throws IOException {
@@ -358,6 +364,7 @@ public class AppNode implements Publisher, Consumer {
 
     @Override
     public void notifyEveryBroker(boolean deletion, ArrayList<String> topics) {
+        Log.wtf("NOTIFY BROKER", String.valueOf(topics));
         if (topics.isEmpty())       //there aren't any videos that can be published
             return;
         for (Address brokerAddress : brokers)
@@ -487,11 +494,10 @@ public class AppNode implements Publisher, Consumer {
         }
     }
 
-    public void registerAll(Set<String> topics){
+    public void registerAll(Set<String> topics) {
         for (String topic : topics)
             register(topic);
     }
-
 
 
     public void appendSubTopicsFile(String name, String channel) {
@@ -507,6 +513,7 @@ public class AppNode implements Publisher, Consumer {
 
     public void appendSubscriptionsFile(String topic) {
         try {
+            ;
             String filename = inDir + File.separator + "subscriptions.txt";
             FileWriter fw = new FileWriter(filename, true);
             fw.write(topic + "\n");
@@ -605,7 +612,7 @@ public class AppNode implements Publisher, Consumer {
     }
 
 
-    public void disconnectAll(Set<String> topics){
+    public void disconnectAll(Set<String> topics) {
         for (String topic : topics)
             disconnect(topic);
     }
@@ -765,6 +772,20 @@ public class AppNode implements Publisher, Consumer {
             }
             notifyEveryBroker(true, getPublishedTopics());
             System.exit(0);
+        }
+    }
+
+    public void connectParallel() {
+        HandleConnect handleConnect = new HandleConnect();
+        handleConnect.start();
+    }
+
+    public class HandleConnect extends Thread {
+        public HandleConnect() {
+        }
+
+        public void run() {
+            connect();
         }
     }
 

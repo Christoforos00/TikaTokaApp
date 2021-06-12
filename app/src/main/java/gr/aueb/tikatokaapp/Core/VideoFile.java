@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class VideoFile implements Serializable {
 
+    private static final long serialVersionUID = -2984529267217354395L;
     String videoName, channelName, dateCreated, length, framerate, frameWidth, frameHeight;
     Bitmap thumbnail;
     ArrayList<String> associatedHashtags;

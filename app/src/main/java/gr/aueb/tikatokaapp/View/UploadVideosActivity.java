@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -113,8 +114,9 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         EditText videoName = (EditText) customLayout.findViewById(R.id.videoName);
         EditText hashtags = (EditText) customLayout.findViewById(R.id.hashtags);
         uploadBtn.setOnClickListener(v -> {
-            VIDEO_NAME = videoName.getText().toString()+ ".mp4";
+            VIDEO_NAME = videoName.getText().toString() + ".mp4";
             HASHTAGS = hashtags.getText().toString();
+            Log.wtf("BEFORE", "MALAKIA1");
             uploadRecordedVideo();
             dialog.dismiss();
         });
@@ -126,11 +128,12 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     private void uploadRecordedVideo() {
 
         try {
-            transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME ));
+            transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME));
         } catch (IOException e) {
             e.printStackTrace();
         }
         deleteRecursive(new File(OLD_VIDEO_PATH));
+        Log.wtf("BEFORE RUNNER", "MALAKIA");
         UploadRunner run = new UploadRunner();
         run.execute();
     }
@@ -193,25 +196,20 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     }
 
 
-
-
     private class UploadRunner extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
+            Log.wtf("UPLOAD RUNNER", VIDEO_NAME);
             ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
             return "1";
         }
 
 
         @Override
-        protected void onPostExecute(String result) {  }
+        protected void onPostExecute(String result) {
+        }
     }
-
-
-
-
-
 
 
 }
