@@ -31,11 +31,6 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
     protected void onCreate(Bundle savedInstanceState) {
         TopicRunner run = new TopicRunner();
         run.execute();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
 
