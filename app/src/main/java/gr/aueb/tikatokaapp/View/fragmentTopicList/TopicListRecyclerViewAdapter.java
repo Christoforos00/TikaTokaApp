@@ -49,13 +49,12 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
             }
         });
 
-        ArrayList<String> sub = new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE"));
-//        if (ConnectedAppNode.getAppNode().getSubscribedTopics().contains(currentTopic)){
-        if (sub.contains(currentTopic)){
-            Log.wtf("saaaa","selected");
+//        ArrayList<String> sub = new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE"));
+        //        if (sub.contains(currentTopic)){
+        if (ConnectedAppNode.getAppNode().getSubscribedTopics().contains(currentTopic)){
+            Log.wtf("selected","selected");
             holder.setSelected();
         }
-
     }
 
 
