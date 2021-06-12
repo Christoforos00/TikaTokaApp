@@ -40,7 +40,6 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
                     .add(R.id.fragment_container, videoListFragment)
                     .commit();
         }
-
     }
 
 
