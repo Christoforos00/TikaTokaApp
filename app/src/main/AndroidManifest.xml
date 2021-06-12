@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TikaTokaApp">
         <activity android:name=".View.SubscribeActivity"></activity>
+        <activity android:name=".View.FeedActivity"></activity>
         <activity android:name=".View.UploadVideosActivity" />
         <activity android:name=".View.PublishedVideosActivity" />
         <activity android:name=".View.MenuActivity" />

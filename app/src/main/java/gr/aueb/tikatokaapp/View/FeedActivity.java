@@ -21,14 +21,13 @@ import gr.aueb.tikatokaapp.Core.VideoFile;
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 
-public class FeedActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener{
+public class FeedActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_published_videos);
-        ((FloatingActionButton) findViewById(R.id.add_video_button)).setOnClickListener(v -> onAddVideo() );
+        setContentView(R.layout.activity_feed);
 
         if (findViewById(R.id.fragment_container) != null) {
 
@@ -57,7 +56,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
 
         Scanner scanner = null;
         try {
-            scanner = new Scanner(new FileReader(ConnectedAppNode.getAppNode().getSubDir()+ "topics.txt"));
+            scanner = new Scanner(new FileReader(ConnectedAppNode.getAppNode().getSubDir() + "/topics.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -65,9 +64,9 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         File f;
         while (scanner.hasNextLine()) {
             String[] parts = scanner.nextLine().split(":");
-            f = new File(ConnectedAppNode.getAppNode().getSubDir() + File.separator + "videos" + File.separator + parts[0]);
+            f = new File(ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + parts[0]);
             retriever = new MediaMetadataRetriever();
-            Log.wtf("path" , f.getAbsolutePath());
+            Log.wtf("path", f.getAbsolutePath());
             retriever.setDataSource(f.getAbsolutePath());
 
             VideoFile videoFile = new VideoFile(f.getName(), parts[1], String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
@@ -78,11 +77,10 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         return videos;
     }
 
-    public void onAddVideo(){
+    public void onAddVideo() {
         Intent intent = new Intent(FeedActivity.this, UploadVideosActivity.class);
         startActivity(intent);
     }
-
 
 
 }

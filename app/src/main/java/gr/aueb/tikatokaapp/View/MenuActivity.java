@@ -36,7 +36,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void onFeedPressed() {
-        Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
+        Intent intent = new Intent(MenuActivity.this, FeedActivity.class);
         startActivity(intent);
     }
 

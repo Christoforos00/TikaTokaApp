@@ -467,6 +467,7 @@ public class AppNode implements Publisher, Consumer {
 
     @Override
     public void register(String topic) {
+        System.out.println("REGISTER!!!!");
         if (subscribedTopics.contains(topic)) {
             System.out.println("ALREADY SUBSCRIBED TO: " + topic);
             return;
@@ -474,6 +475,7 @@ public class AppNode implements Publisher, Consumer {
 
         if (getResponsibleBroker(topic) != null) {
             playData(topic);
+            System.out.println("PLAYDATA!!!!");
             if (!subscribedTopics.contains(topic)) {
                 synchronized (subscribedTopics) {
                     subscribedTopics.add(topic);
