@@ -88,7 +88,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         builder.setView(customLayout);
         AlertDialog dialog = builder.create();
         dialog.show();
-        mVideoView = (VideoView) customLayout.findViewById(R.id.video_playing);
+        mVideoView = (VideoView) customLayout.findViewById(R.id.videoViewPlayer);
         mVideoView.setOnPreparedListener(this);
 
         mediaController = new MediaController(mVideoView.getContext());

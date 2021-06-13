@@ -427,7 +427,7 @@ public class AppNode implements Publisher, Consumer {
     @Override
     public ArrayList<Value> generateChunks(Value video) throws IOException {
         ArrayList<Value> chunks = new ArrayList<Value>();
-        int chunkSize = 10000;                     //0.5 mb
+        int chunkSize = 500000;                     //0.5 mb
         try {
             File file = new File(outDir + "/videos/" + video.videoFile.videoName);
             int chunkNumber = ((int) file.length()) / chunkSize;
