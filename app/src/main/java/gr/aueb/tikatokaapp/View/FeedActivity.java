@@ -4,7 +4,13 @@ import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,7 +51,9 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
 
     @Override
     public void onListFragmentInteraction(Value item) {
-        //can delete
+        String pathVideo = ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + item.getName();
+        showPopUp(pathVideo);
+
     }
 
     @Override
@@ -73,6 +81,20 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
             videos.add(new Value(videoFile));
         }
         return videos;
+    }
+
+    public void showPopUp(String pathVideo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customLayout = getLayoutInflater().inflate(R.layout.video_player, null);
+        builder.setView(customLayout);
+        AlertDialog dialog = builder.create();
+
+        VideoView videoPlayer = (VideoView) customLayout.findViewById(R.id.video_playing);
+        videoPlayer.setVideoPath(pathVideo);
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoPlayer);
+        videoPlayer.setMediaController(mediaController);
+        dialog.show();
     }
 
     public void onAddVideo() {
