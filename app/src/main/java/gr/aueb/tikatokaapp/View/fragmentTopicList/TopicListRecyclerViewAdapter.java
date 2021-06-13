@@ -52,7 +52,6 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
 //        ArrayList<String> sub = new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE"));
         //        if (sub.contains(currentTopic)){
         if (ConnectedAppNode.getAppNode().getSubscribedTopics().contains(currentTopic)){
-            Log.wtf("selected","selected");
             holder.setSelected();
         }
     }
@@ -80,6 +79,7 @@ public class TopicListRecyclerViewAdapter extends RecyclerView.Adapter<TopicList
         }
 
         public void clicked(){
+            mView.getContext();
             if (!SELECTED) {
                 setSelected();
             } else {

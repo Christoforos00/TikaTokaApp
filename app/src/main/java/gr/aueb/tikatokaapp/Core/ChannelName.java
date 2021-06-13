@@ -52,12 +52,11 @@ public class ChannelName {
                     continue;
 
                 retriever = new MediaMetadataRetriever();
-                Log.wtf("path", f.getAbsolutePath());
                 retriever.setDataSource(f.getAbsolutePath());
 
                 VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
                         , String.valueOf(retriever.METADATA_KEY_CAPTURE_FRAMERATE), String.valueOf(retriever.METADATA_KEY_IMAGE_HEIGHT), String.valueOf(retriever.METADATA_KEY_IMAGE_WIDTH), null);
-                videoFile.setThumbnail(retriever.getFrameAtTime());
+
                 videos.add(new Value(videoFile));
                 if (parts.length == 1) continue;            //if there are no topics for a video
 

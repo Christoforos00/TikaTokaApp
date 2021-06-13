@@ -60,9 +60,6 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
         newUnsubs.removeAll(currentSubs);
         newSubs.removeAll(previousSubs);
 
-        Log.wtf("subs", newSubs.toString());
-        Log.wtf("unsubs", newUnsubs.toString());
-
         SubscribeRunner run = new SubscribeRunner();
         run.execute();
 
@@ -77,7 +74,6 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
             topicsSelected.add(topic);
         else
             topicsSelected.remove(topic);
-        Log.wtf("sel", topicsSelected.toString());
     }
 
     //TODO return available topics ( from online pubs )
@@ -108,7 +104,6 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.wtf("backg","aa");
             topicList = ConnectedAppNode.getAppNode().findAllTopics();
             return "1";
         }

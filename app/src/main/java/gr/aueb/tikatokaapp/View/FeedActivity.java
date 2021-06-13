@@ -65,7 +65,6 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
             String[] parts = scanner.nextLine().split(":");
             f = new File(ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + parts[0]);
             retriever = new MediaMetadataRetriever();
-            Log.wtf("pathSub", f.getAbsolutePath());
             retriever.setDataSource(f.getAbsolutePath());
 
             VideoFile videoFile = new VideoFile(f.getName(), parts[1], String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)

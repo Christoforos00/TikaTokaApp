@@ -76,6 +76,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         return new ArrayList<Value>();
     }
 
+
     public void onRec() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 60);
@@ -116,7 +117,6 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         uploadBtn.setOnClickListener(v -> {
             VIDEO_NAME = videoName.getText().toString() + ".mp4";
             HASHTAGS = hashtags.getText().toString();
-            Log.wtf("BEFORE", "MALAKIA1");
             uploadRecordedVideo();
             dialog.dismiss();
         });
@@ -133,9 +133,12 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
             e.printStackTrace();
         }
         deleteRecursive(new File(OLD_VIDEO_PATH));
-        Log.wtf("BEFORE RUNNER", "MALAKIA");
+
         UploadRunner run = new UploadRunner();
         run.execute();
+
+        Intent intent = new Intent(UploadVideosActivity.this, PublishedVideosActivity.class);
+        startActivity(intent);
     }
 
 
@@ -200,7 +203,6 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.wtf("UPLOAD RUNNER", VIDEO_NAME);
             ConnectedAppNode.getAppNode().uploadVideo(VIDEO_NAME, HASHTAGS);
             return "1";
         }

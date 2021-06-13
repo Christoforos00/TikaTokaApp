@@ -207,7 +207,6 @@ public class AppNode implements Publisher, Consumer {
         String[] topics = s.split(",");
         appendInPubTopicsFile(videoFileName, topics);
         ArrayList<String> addedHashtags = loadPublisherVideos();
-        Log.wtf("ADD TOPICS", s);
         notifyEveryBroker(false, addedHashtags);
     }
 
@@ -272,7 +271,6 @@ public class AppNode implements Publisher, Consumer {
                         return;
                     }
                 }
-                Log.wtf("UPLOAD", videoFileName);
                 addTopics(videoFileName, hashtags);
             } else {
                 System.out.println("[SYSTEM] >>> Sorry, I didn't find any video file with name: " + videoFileName);
@@ -366,7 +364,6 @@ public class AppNode implements Publisher, Consumer {
 
     @Override
     public void notifyEveryBroker(boolean deletion, ArrayList<String> topics) {
-        Log.wtf("NOTIFY BROKER", String.valueOf(topics));
         if (topics.isEmpty())       //there aren't any videos that can be published
             return;
         for (Address brokerAddress : brokers)
