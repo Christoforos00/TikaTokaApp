@@ -2,11 +2,15 @@ package gr.aueb.tikatokaapp.View;
 
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -27,8 +31,10 @@ import gr.aueb.tikatokaapp.Core.VideoFile;
 import gr.aueb.tikatokaapp.R;
 import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 
-public class FeedActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {
+public class FeedActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener, MediaPlayer.OnPreparedListener {
 
+    private VideoView mVideoView = null;
+    MediaController mediaController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,9 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
     @Override
     public void onListFragmentInteraction(Value item) {
         String pathVideo = ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + item.getName();
-        showPopUp(pathVideo);
+        Intent intent = new Intent(this, TestActivity.class);
+        intent.putExtra("PATH", pathVideo);
+        startActivity(intent);
 
     }
 
@@ -88,13 +96,17 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         View customLayout = getLayoutInflater().inflate(R.layout.video_player, null);
         builder.setView(customLayout);
         AlertDialog dialog = builder.create();
-
-        VideoView videoPlayer = (VideoView) customLayout.findViewById(R.id.video_playing);
-        videoPlayer.setVideoPath(pathVideo);
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoPlayer);
-        videoPlayer.setMediaController(mediaController);
         dialog.show();
+        mVideoView = (VideoView) customLayout.findViewById(R.id.video_playing);
+        mVideoView.setOnPreparedListener(this);
+
+        mediaController = new MediaController(mVideoView.getContext());
+        mediaController.setMediaPlayer(mVideoView);
+        mediaController.setAnchorView(mVideoView);
+        mVideoView.setMediaController(mediaController);
+        mVideoView.setVideoPath(pathVideo);
+
+
     }
 
     public void onAddVideo() {
@@ -103,4 +115,9 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
     }
 
 
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        mVideoView.start();
+        mediaController.show(500);
+    }
 }
