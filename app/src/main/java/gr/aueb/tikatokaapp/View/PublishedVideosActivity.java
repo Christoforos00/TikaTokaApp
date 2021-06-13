@@ -41,7 +41,10 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
 
     @Override
     public void onListFragmentInteraction(Value item) {
-        //can delete
+        String pathVideo = ConnectedAppNode.getAppNode().getPubDir() + "/videos/" + item.getName();
+        Intent intent = new Intent(PublishedVideosActivity.this, VideoPlayerActivity.class);
+        intent.putExtra("PATH", pathVideo);
+        startActivity(intent);
     }
 
     @Override

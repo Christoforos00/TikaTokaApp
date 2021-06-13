@@ -8,12 +8,12 @@ import android.widget.VideoView;
 
 import gr.aueb.tikatokaapp.R;
 
-public class TestActivity extends AppCompatActivity {
+public class VideoPlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_video_player);
         VideoView videoView = (VideoView) findViewById(R.id.videoViewPlayer);
         String extra = this.getIntent().getStringExtra("PATH");
         videoView.setVideoPath(extra);

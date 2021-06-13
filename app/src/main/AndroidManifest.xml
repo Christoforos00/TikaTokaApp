@@ -18,19 +18,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikaTokaApp">
-        <activity android:name=".View.TestActivity"></activity>
-        <activity android:name=".View.SubscribeActivity" />
-        <activity android:name=".View.FeedActivity" />
+        <activity android:name=".View.SubscribeActivity"/>
+        <activity android:name=".View.FeedActivity"/>
+        <activity android:name=".View.VideoPlayerActivity"></activity>
         <activity android:name=".View.UploadVideosActivity" />
         <activity android:name=".View.PublishedVideosActivity" />
         <activity android:name=".View.MenuActivity" />
         <activity android:name=".View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

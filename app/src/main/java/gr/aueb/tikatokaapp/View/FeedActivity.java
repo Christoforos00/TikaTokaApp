@@ -3,21 +3,13 @@ package gr.aueb.tikatokaapp.View;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,10 +50,9 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
     @Override
     public void onListFragmentInteraction(Value item) {
         String pathVideo = ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + item.getName();
-        Intent intent = new Intent(this, TestActivity.class);
+        Intent intent = new Intent(FeedActivity.this, VideoPlayerActivity.class);
         intent.putExtra("PATH", pathVideo);
         startActivity(intent);
-
     }
 
     @Override

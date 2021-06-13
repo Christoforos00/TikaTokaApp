@@ -23,6 +23,7 @@ public class AppNode implements Publisher, Consumer {
     private Map<String, Address> topicToBroker = new HashMap<String, Address>();
     private final ArrayList<Address> brokers = new ArrayList<Address>();
     private final List<String> subscribedTopics = Collections.synchronizedList(new ArrayList<String>());
+    public ArrayList<Value> videos =  new ArrayList<>();
 
 //    public static void main(String args[]) throws InterruptedException, UnknownHostException {
 //
