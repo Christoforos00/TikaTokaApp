@@ -48,19 +48,17 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         setContentView(R.layout.activity_upload_videos);
 
         findViewById(R.id.rec_button).setOnClickListener(v -> onRec());
+        findViewById(R.id.rec_button).setOnClickListener(v -> onGallery());
 
         if (findViewById(R.id.fragment_container) != null) {
-
             if (savedInstanceState != null) {
                 return;
             }
-
             VideoListFragment videoListFragment = VideoListFragment.newInstance(1);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, videoListFragment)
                     .commit();
         }
-
         getCameraPermission();
     }
 
@@ -83,25 +81,21 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         startActivityForResult(intent, 1);
     }
 
+    public void onGallery(){
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select a video"), 1);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
-
             Uri vid = data.getData();
-
-            MediaMetadataRetriever retriever;
-
-
             OLD_VIDEO_PATH = getRealPathFromURI(vid);
-
-//            retriever = new MediaMetadataRetriever();
-//            retriever.setDataSource(OLD_VIDEO_PATH);
-//            Log.wtf("dataa", String.valueOf(retriever.METADATA_KEY_DURATION));
-
             NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
             showPopUp();
-
         }
     }
 

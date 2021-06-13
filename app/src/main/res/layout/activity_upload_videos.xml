@@ -35,10 +35,11 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginStart="100dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="200dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +48,8 @@
 
         <ImageButton
             android:id="@+id/gallery_button"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
             android:src="@drawable/icon_gallery"
             android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
@@ -56,11 +57,25 @@
             android:layout_below="@+id/hlTopBar"
             android:background="#00000000"
             android:scaleType="fitXY" />
+    </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="200dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/rec_button"
-            android:layout_width="120dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:src="@drawable/rec_button"
             android:layout_centerHorizontal="true"
@@ -69,8 +84,9 @@
             android:layout_below="@+id/hlTopBar"
             android:background="#00000000"
             android:scaleType="fitXY" />
-
-
     </LinearLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
