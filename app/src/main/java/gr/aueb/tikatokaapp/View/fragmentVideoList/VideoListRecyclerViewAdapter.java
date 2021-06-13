@@ -51,8 +51,6 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
                 mListener.onListFragmentInteraction(holder.mItem);
             }
         });
-
-
     }
 
 
@@ -64,6 +62,7 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView txtVideoName;
+        public final TextView txtChannelName;
         public final TextView txtCreationDate;
         public final LinearLayout btnSelect;
         private final ImageView imageView;
@@ -74,7 +73,8 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
             super(view);
             mView = view;
             txtVideoName = view.findViewById(R.id.txt_video_name);
-            txtCreationDate = view.findViewById(R.id.txt_video_date_duration);
+            txtChannelName = view.findViewById(R.id.txt_channel_name);
+            txtCreationDate = view.findViewById(R.id.txt_date);
             btnSelect = view.findViewById(R.id.btn_select_video);
             imageView = view.findViewById(R.id.video_thumbnail);
         }

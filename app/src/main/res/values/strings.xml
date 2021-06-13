@@ -15,4 +15,6 @@
     <string name="subscribe">SUBSCRIBE</string>
     <string name="available_topics">Available Topics</string>
     <string name="done">DONE</string>
+    <string name="channel_name">Channel Name</string>
+    <string name="upload_a_video">UPLOAD A VIDEO</string>
 </resources>
