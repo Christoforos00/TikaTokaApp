@@ -17,4 +17,5 @@
     <string name="done">DONE</string>
     <string name="channel_name">Channel Name</string>
     <string name="upload_a_video">UPLOAD A VIDEO</string>
+    <string name="channelname">ChannelName</string>
 </resources>

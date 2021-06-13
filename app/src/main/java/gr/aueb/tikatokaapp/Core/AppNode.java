@@ -23,7 +23,7 @@ public class AppNode implements Publisher, Consumer {
     private Map<String, Address> topicToBroker = new HashMap<String, Address>();
     private final ArrayList<Address> brokers = new ArrayList<Address>();
     private final List<String> subscribedTopics = Collections.synchronizedList(new ArrayList<String>());
-    public ArrayList<Value> videos =  new ArrayList<>();
+    public ArrayList<Value> videos = new ArrayList<>();
 
 //    public static void main(String args[]) throws InterruptedException, UnknownHostException {
 //
@@ -396,6 +396,7 @@ public class AppNode implements Publisher, Consumer {
         System.out.println("[PUBLISHER] >>> PUSH TO BROKER: STARTED!");
         System.out.println("[PUBLISHER] >>> pushing videos with topic: " + topic);
         ArrayList<Value> videos = getVideos(topic);
+
         for (Value video : videos)                                  //send every relevant video
             push(video, inputStream, outputStream);
         try {
@@ -427,7 +428,7 @@ public class AppNode implements Publisher, Consumer {
     @Override
     public ArrayList<Value> generateChunks(Value video) throws IOException {
         ArrayList<Value> chunks = new ArrayList<Value>();
-        int chunkSize = 10000;                     //0.5 mb
+        int chunkSize = 1000000;                     //0.5 mb
         try {
             File file = new File(outDir + "/videos/" + video.videoFile.videoName);
             int chunkNumber = ((int) file.length()) / chunkSize;
