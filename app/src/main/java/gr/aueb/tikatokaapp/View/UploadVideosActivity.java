@@ -48,7 +48,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         setContentView(R.layout.activity_upload_videos);
 
         findViewById(R.id.rec_button).setOnClickListener(v -> onRec());
-        findViewById(R.id.rec_button).setOnClickListener(v -> onGallery());
+        findViewById(R.id.gallery_button).setOnClickListener(v -> onGallery());
 
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
@@ -82,10 +82,9 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     }
 
     public void onGallery(){
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("video/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a video"), 1);
+        startActivityForResult(intent, 1);
     }
 
     @Override
