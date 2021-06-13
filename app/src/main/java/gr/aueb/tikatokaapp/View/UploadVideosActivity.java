@@ -37,6 +37,8 @@ import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
+    public static final int RECORD_CODE = 1;
+    public static final int GALLERY_CODE = 2;
     private String OLD_VIDEO_PATH;
     private String NEW_VIDEO_PATH;
     private String VIDEO_NAME;
@@ -78,27 +80,32 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     public void onRec() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 60);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, RECORD_CODE);
     }
 
     public void onGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("video/*");
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, GALLERY_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1) {
+        if (resultCode == RESULT_OK && requestCode == RECORD_CODE) {
             Uri vid = data.getData();
             OLD_VIDEO_PATH = getRealPathFromURI(vid);
             NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
-            showPopUp();
+            showPopUp(true);
+        }else if (resultCode == RESULT_OK && requestCode == GALLERY_CODE) {
+            Uri vid = data.getData();
+            OLD_VIDEO_PATH = getRealPathFromURI(vid);
+            NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
+            showPopUp(false);
         }
     }
 
-    public void showPopUp() {
+    public void showPopUp(Boolean delete) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View customLayout = getLayoutInflater().inflate(R.layout.enter_hashtags_popup, null);
         builder.setView(customLayout);
@@ -110,7 +117,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         uploadBtn.setOnClickListener(v -> {
             VIDEO_NAME = videoName.getText().toString() + ".mp4";
             HASHTAGS = hashtags.getText().toString();
-            uploadRecordedVideo();
+            uploadRecordedVideo(delete);
             dialog.dismiss();
         });
 
@@ -118,18 +125,17 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
     }
 
 
-    private void uploadRecordedVideo() {
-
+    private void uploadRecordedVideo(Boolean delete) {
         try {
             transferVideo(new File(OLD_VIDEO_PATH), new File(NEW_VIDEO_PATH + "/videos/" + VIDEO_NAME));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        deleteRecursive(new File(OLD_VIDEO_PATH));
+        if (delete)
+            deleteRecursive(new File(OLD_VIDEO_PATH));
 
         UploadRunner run = new UploadRunner();
         run.execute();
-
         Intent intent = new Intent(UploadVideosActivity.this, PublishedVideosActivity.class);
         startActivity(intent);
     }
@@ -158,9 +164,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
                         new File(targetLocation, children[i]));
             }
         } else {
-
             InputStream in = new FileInputStream(sourceLocation);
-
             OutputStream out = new FileOutputStream(targetLocation);
 
             // Copy the bits from instream to outstream

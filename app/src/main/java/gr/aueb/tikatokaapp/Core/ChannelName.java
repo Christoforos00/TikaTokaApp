@@ -52,6 +52,7 @@ public class ChannelName {
                     continue;
 
                 retriever = new MediaMetadataRetriever();
+                System.out.println(f.getAbsolutePath());
                 retriever.setDataSource(f.getAbsolutePath());
 
                 VideoFile videoFile = new VideoFile(f.getName(), channelName, String.valueOf(retriever.METADATA_KEY_DATE), String.valueOf(retriever.METADATA_KEY_DURATION)
