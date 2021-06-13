@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -71,6 +72,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         while (scanner.hasNextLine()) {
             String[] parts = scanner.nextLine().split(":");
             f = new File(ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + parts[0]);
+            Log.wtf("PATH I READ FROM MOBILE", f.getAbsolutePath());
             retriever = new MediaMetadataRetriever();
             retriever.setDataSource(f.getAbsolutePath());
 

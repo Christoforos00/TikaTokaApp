@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+        intent.putExtra(USER_NAME_EXTRA, userName);
         startActivity(intent);
     }
 

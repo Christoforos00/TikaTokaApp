@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.File;
 
@@ -23,7 +24,9 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
+        userName = this.getIntent().getStringExtra(USER_NAME_EXTRA);
+        TextView title = (TextView) findViewById(R.id.channel_name_title);
+        title.setText(userName);
         findViewById(R.id.channel_button).setOnClickListener(v -> onChannelPressed());
         findViewById(R.id.feed_button).setOnClickListener(v -> onFeedPressed());
         findViewById(R.id.subs_button).setOnClickListener(v -> onSubscriptionsPressed());
