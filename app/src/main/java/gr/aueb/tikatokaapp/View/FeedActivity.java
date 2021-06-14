@@ -33,13 +33,14 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
     private VideoView mVideoView = null;
     MediaController mediaController = null;
     private static final String VIDEO_ΝΑΜΕ = "video_name_extra";
+    HandleRefresh action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        HandleRefresh action = new HandleRefresh();
+        action = new HandleRefresh();
         action.start();
 
         if (findViewById(R.id.fragment_container) != null) {
@@ -54,6 +55,11 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        action.interrupt();
+        super.onBackPressed();
+    }
 
     @Override
     public void onListFragmentInteraction(Value item) {
@@ -61,6 +67,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         Intent intent = new Intent(FeedActivity.this, VideoPlayerActivity.class);
         intent.putExtra("PATH", pathVideo);
         intent.putExtra(VIDEO_ΝΑΜΕ, item.getName());
+        action.interrupt();
         startActivity(intent);
     }
 
