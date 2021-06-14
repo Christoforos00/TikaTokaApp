@@ -23,7 +23,7 @@ public class AppNode implements Publisher, Consumer {
     private Map<String, Address> topicToBroker = new HashMap<String, Address>();
     private final ArrayList<Address> brokers = new ArrayList<Address>();
     private final List<String> subscribedTopics = Collections.synchronizedList(new ArrayList<String>());
-    public ArrayList<Value> videos =  new ArrayList<>();
+    public ArrayList<Value> videos = new ArrayList<>();
 
 //    public static void main(String args[]) throws InterruptedException, UnknownHostException {
 //
@@ -396,8 +396,10 @@ public class AppNode implements Publisher, Consumer {
         System.out.println("[PUBLISHER] >>> PUSH TO BROKER: STARTED!");
         System.out.println("[PUBLISHER] >>> pushing videos with topic: " + topic);
         ArrayList<Value> videos = getVideos(topic);
-        for (Value video : videos)                                  //send every relevant video
+        for (Value video : videos) {                             //send every relevant video
+            Log.wtf("VIDEO NAME PUSHED", video.getName());
             push(video, inputStream, outputStream);
+        }
         try {
             outputStream.writeObject("END:END:-1");
             outputStream.flush();
@@ -427,11 +429,10 @@ public class AppNode implements Publisher, Consumer {
     @Override
     public ArrayList<Value> generateChunks(Value video) throws IOException {
         ArrayList<Value> chunks = new ArrayList<Value>();
-        int chunkSize = 10000;                     //0.5 mb
+        int chunkSize = 500000;                     //0.5 mb
         try {
             File file = new File(outDir + "/videos/" + video.videoFile.videoName);
             int chunkNumber = ((int) file.length()) / chunkSize;
-            chunkNumber = chunkNumber/2;
             FileInputStream inputStream = new FileInputStream(file);
             byte[] wholeVideo = new byte[(int) file.length()];
             inputStream.read(wholeVideo);
@@ -626,6 +627,7 @@ public class AppNode implements Publisher, Consumer {
         int chunksNumber = Integer.parseInt(dataRead[2]);
         OutputStream outStream = null;
         while (chunksNumber != -1) {
+            Log.wtf("VIDEO NAME PULLED", dataRead[0]);
             System.out.println("[SYSTEM] >>> " + dataRead[0] + " COMING FROM " + dataRead[1]);
             Boolean firstChunk = true;
             if (alreadyHasVideo(dataRead[0] + ":" + dataRead[1])) {         // check videoName:ChannelName
@@ -638,6 +640,7 @@ public class AppNode implements Publisher, Consumer {
                 appendSubTopicsFile(dataRead[0], dataRead[1]);
                 for (int current = 0; current < chunksNumber; current++) {
                     Value receivedChunk = (Value) inputStream.readObject();
+                    Log.wtf("CHUNK RECEIVED", String.valueOf(current));
                     if (firstChunk) {
                         firstChunk = false;
                         outStream = new FileOutputStream(inDir + File.separator + "videos" + File.separator + receivedChunk.getName());
