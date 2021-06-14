@@ -11,6 +11,7 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -130,10 +131,10 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
                 while (!isInterrupted()) {
                     Thread.sleep(10000);
                     runOnUiThread(() -> {
+                        Log.wtf("feed","feed refreshhhhhh");
                         VideoListFragment videoListFragment = VideoListFragment.newInstance(1);
-                        getSupportFragmentManager().beginTransaction()
-                                .add(R.id.fragment_container, videoListFragment)
-                                .commit();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragment_container, videoListFragment).commit();
                     });
                 }
             } catch (InterruptedException e) {
