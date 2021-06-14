@@ -217,16 +217,22 @@ public class AppNode implements Publisher, Consumer {
         notifyEveryBroker(true, deletetedHashtags);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public void deleteVideo(String videoFileName) {
         String PATH = outDir + File.separator + "videos" + File.separator + videoFileName;
         try {
-            if (Files.deleteIfExists(Paths.get(PATH))) {
-                removeTopics(videoFileName);
-                System.out.println("[SYSTEM] >>> " + videoFileName + " is deleted!");
-            } else {
+            File file = new File(PATH);
+            if (file.exists()) {
+                if (file.delete()) {
+                    removeTopics(videoFileName);
+                    System.out.println("[SYSTEM] >>> " + videoFileName + " is deleted!");
+                }else{
+                    System.out.println("[SYSTEM] >>> " + videoFileName + "delete FAILED!");
+                }
+            }else{
                 System.out.println("[SYSTEM] >>> This file can't be found.");
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

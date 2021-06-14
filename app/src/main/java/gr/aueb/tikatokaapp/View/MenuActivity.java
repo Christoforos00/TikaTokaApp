@@ -32,6 +32,10 @@ public class MenuActivity extends AppCompatActivity {
         findViewById(R.id.subs_button).setOnClickListener(v -> onSubscriptionsPressed());
     }
 
+    @Override
+    public void onBackPressed(){
+
+    }
 
     public void onChannelPressed() {
         Intent intent = new Intent(MenuActivity.this, PublishedVideosActivity.class);
