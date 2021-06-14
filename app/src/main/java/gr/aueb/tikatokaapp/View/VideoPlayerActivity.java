@@ -21,45 +21,37 @@ public class VideoPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video_player);
         String PATH_VIDEO = this.getIntent().getStringExtra("PATH");
         String VIDEO_NAME = this.getIntent().getStringExtra(VIDEO_ΝΑΜΕ);
+
         TextView textView = (TextView) findViewById(R.id.videoplayer_title);
         textView.setText(VIDEO_NAME);
         MediaController mediaController = new MediaController(this);
         VideoView videoView = (VideoView) findViewById(R.id.videoViewPlayer);
-
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                completionPos = mp.getCurrentPosition();
-            }
-        });
-
-        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                errorPos = mp.getCurrentPosition();
-                playerPos = Math.max(completionPos, errorPos);
-                try {
-                    mp.reset();
-                    videoView.setVideoPath(PATH_VIDEO);
-                    videoView.seekTo(playerPos);
-                    videoView.start();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-
 
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
         videoView.setVideoPath(PATH_VIDEO);
         videoView.start();
 
-    }
+        videoView.setOnCompletionListener(mp -> completionPos = mp.getCurrentPosition());
 
+        videoView.setOnErrorListener((mp, what, extra) -> {
+            errorPos = mp.getCurrentPosition();
+            playerPos = Math.max(completionPos, errorPos);
+            try {
+                mp.reset();
+                videoView.setVideoPath(PATH_VIDEO);
+                videoView.seekTo(playerPos);
+                videoView.start();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        });
+
+
+    }
 }

@@ -242,9 +242,7 @@ public class BrokerImpl implements Broker {
                         it1.remove();
                         if (pubs.isEmpty()) {
                             topicToPublishers.remove(topic);
-//                            synchronized (topicToBroker) {
-//                                topicToBroker.remove(topic);
-//                            }
+                            synchronized (topicToBroker) { topicToBroker.remove(topic);}
                         }
                     }
                 }

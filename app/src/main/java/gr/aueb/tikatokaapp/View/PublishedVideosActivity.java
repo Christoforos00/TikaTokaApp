@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
     private static final String VIDEO_ΝΑΜΕ = "video_name_extra";
     private static final String PATH = "PATH";
     private AlertDialog POPUP_ACTION;
+    private Value currentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,10 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
     }
 
     public void onDeleteVideoAction(Value item) {
-        ConnectedAppNode.getAppNode().deleteVideo(item.getVideoFile().getVideoName());
+        currentItem = item;
+        DeleteVideoRunner runner = new DeleteVideoRunner();
+        runner.execute();
+
         POPUP_ACTION.dismiss();
         POPUP_ACTION = null;
         this.recreate();
@@ -98,5 +103,18 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
         startActivity(intent);
     }
 
+
+    private class DeleteVideoRunner extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            ConnectedAppNode.getAppNode().deleteVideo(currentItem.getVideoFile().getVideoName());
+            return "1";
+        }
+
+        @Override
+        protected void onPostExecute(String result) { }
+
+    }
 
 }
