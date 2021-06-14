@@ -16,8 +16,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
+import gr.aueb.tikatokaapp.Core.AppNode;
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.Core.VideoFile;
@@ -34,12 +37,14 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        HandleRefresh action = new HandleRefresh();
+        action.start();
+
         if (findViewById(R.id.fragment_container) != null) {
 
             if (savedInstanceState != null) {
                 return;
             }
-
             VideoListFragment videoListFragment = VideoListFragment.newInstance(1);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, videoListFragment)
@@ -112,5 +117,27 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
     public void onPrepared(MediaPlayer mp) {
         mVideoView.start();
         mediaController.show(500);
+    }
+
+
+
+    public class HandleRefresh extends Thread {
+        public HandleRefresh() {
+        }
+
+        public void run() {
+            try {
+                while (!isInterrupted()) {
+                    Thread.sleep(10000);
+                    runOnUiThread(() -> {
+                        VideoListFragment videoListFragment = VideoListFragment.newInstance(1);
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.fragment_container, videoListFragment)
+                                .commit();
+                    });
+                }
+            } catch (InterruptedException e) {
+            }
+        }
     }
 }
