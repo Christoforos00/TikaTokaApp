@@ -90,23 +90,23 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         return videos;
     }
 
-    public void showPopUp(String pathVideo) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View customLayout = getLayoutInflater().inflate(R.layout.video_player, null);
-        builder.setView(customLayout);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        mVideoView = (VideoView) customLayout.findViewById(R.id.videoViewPlayer);
-        mVideoView.setOnPreparedListener(this);
-
-        mediaController = new MediaController(mVideoView.getContext());
-        mediaController.setMediaPlayer(mVideoView);
-        mediaController.setAnchorView(mVideoView);
-        mVideoView.setMediaController(mediaController);
-        mVideoView.setVideoPath(pathVideo);
-
-
-    }
+//    public void showPopUp(String pathVideo) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        View customLayout = getLayoutInflater().inflate(R.layout.video_player, null);
+//        builder.setView(customLayout);
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//        mVideoView = (VideoView) customLayout.findViewById(R.id.videoViewPlayer);
+//        mVideoView.setOnPreparedListener(this);
+//
+//        mediaController = new MediaController(mVideoView.getContext());
+//        mediaController.setMediaPlayer(mVideoView);
+//        mediaController.setAnchorView(mVideoView);
+//        mVideoView.setMediaController(mediaController);
+//        mVideoView.setVideoPath(pathVideo);
+//
+//
+//    }
 
     public void onAddVideo() {
         Intent intent = new Intent(FeedActivity.this, UploadVideosActivity.class);

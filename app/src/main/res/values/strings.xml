@@ -18,4 +18,5 @@
     <string name="channel_name">Channel Name</string>
     <string name="upload_a_video">UPLOAD A VIDEO</string>
     <string name="channelname">ChannelName</string>
+    <string name="video_name">Video Name</string>
 </resources>
