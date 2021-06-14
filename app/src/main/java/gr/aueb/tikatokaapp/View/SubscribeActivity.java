@@ -52,7 +52,6 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
 
     private void onDone() {
         Set<String> previousSubs = new HashSet<>(ConnectedAppNode.getAppNode().getSubscribedTopics());
-//        Set<String> previousSubs = new HashSet<>(new ArrayList<>(Arrays.asList("#VIRAL", "#DOGGO", "#SHIE")));
         newUnsubs = new HashSet<>(previousSubs);
         Set<String> currentSubs = new HashSet<>(topicsSelected);
         newSubs = new HashSet<>(currentSubs);
@@ -76,11 +75,9 @@ public class SubscribeActivity extends AppCompatActivity implements TopicListFra
             topicsSelected.remove(topic);
     }
 
-    //TODO return available topics ( from online pubs )
     @Override
     public ArrayList<String> getTopicList() {
         return topicList;
-//        return new ArrayList<>(Arrays.asList("#VIRAL", "#DOG", "#DOGGO", "#CATTO", "#BOONK", "#GANG", "#SHIE"));
     }
 
 
