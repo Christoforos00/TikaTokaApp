@@ -32,6 +32,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
 
     private VideoView mVideoView = null;
     MediaController mediaController = null;
+    private static final String VIDEO_ΝΑΜΕ = "video_name_extra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         String pathVideo = ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + item.getName();
         Intent intent = new Intent(FeedActivity.this, VideoPlayerActivity.class);
         intent.putExtra("PATH", pathVideo);
+        intent.putExtra(VIDEO_ΝΑΜΕ, item.getName());
         startActivity(intent);
     }
 
@@ -90,23 +92,6 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
         return videos;
     }
 
-//    public void showPopUp(String pathVideo) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        View customLayout = getLayoutInflater().inflate(R.layout.video_player, null);
-//        builder.setView(customLayout);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//        mVideoView = (VideoView) customLayout.findViewById(R.id.videoViewPlayer);
-//        mVideoView.setOnPreparedListener(this);
-//
-//        mediaController = new MediaController(mVideoView.getContext());
-//        mediaController.setMediaPlayer(mVideoView);
-//        mediaController.setAnchorView(mVideoView);
-//        mVideoView.setMediaController(mediaController);
-//        mVideoView.setVideoPath(pathVideo);
-//
-//
-//    }
 
     public void onAddVideo() {
         Intent intent = new Intent(FeedActivity.this, UploadVideosActivity.class);
@@ -121,7 +106,6 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
     }
 
 
-
     public class HandleRefresh extends Thread {
         public HandleRefresh() {
         }
@@ -131,7 +115,7 @@ public class FeedActivity extends AppCompatActivity implements VideoListFragment
                 while (!isInterrupted()) {
                     Thread.sleep(10000);
                     runOnUiThread(() -> {
-                        Log.wtf("feed","feed refreshhhhhh");
+                        Log.wtf("feed", "feed refreshhhhhh");
                         VideoListFragment videoListFragment = VideoListFragment.newInstance(1);
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.fragment_container, videoListFragment).commit();
