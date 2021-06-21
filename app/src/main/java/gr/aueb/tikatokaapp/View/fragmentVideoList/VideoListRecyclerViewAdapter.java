@@ -43,8 +43,9 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Value currentValue = mValues.get(position);
         holder.mItem = currentValue;
-        holder.txtVideoName.setText(currentValue.getVideoFile().getVideoName());
-        holder.txtCreationDate.setText(currentValue.getVideoFile().getDateCreated());
+        String videoName = currentValue.getVideoFile().getVideoName().split("\\.")[0];
+        holder.txtVideoName.setText(videoName);
+        holder.txtChannelName.setText("Pub: " + currentValue.getVideoFile().getChannelName());
         holder.setThumbnail();
         holder.btnSelect.setOnClickListener((View.OnClickListener) v -> {
             if (null != mListener) {
@@ -63,7 +64,6 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
         public final View mView;
         public final TextView txtVideoName;
         public final TextView txtChannelName;
-        public final TextView txtCreationDate;
         public final LinearLayout btnSelect;
         private final ImageView imageView;
         public Value mItem;
@@ -74,19 +74,18 @@ public class VideoListRecyclerViewAdapter extends RecyclerView.Adapter<VideoList
             mView = view;
             txtVideoName = view.findViewById(R.id.txt_video_name);
             txtChannelName = view.findViewById(R.id.txt_channel_name);
-            txtCreationDate = view.findViewById(R.id.txt_date);
             btnSelect = view.findViewById(R.id.btn_select_video);
             imageView = view.findViewById(R.id.video_thumbnail);
         }
 
-        public void setThumbnail(){
+        public void setThumbnail() {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            if (mView.getContext() instanceof PublishedVideosActivity ) {
-                retriever.setDataSource(ConnectedAppNode.getAppNode().getPubDir() + "/videos/" +   mItem.getName() );
-                imageView.setImageBitmap( retriever.getFrameAtTime() );
-            }else {
-                retriever.setDataSource(ConnectedAppNode.getAppNode().getSubDir() + "/videos/" +   mItem.getName() );
-                imageView.setImageBitmap( retriever.getFrameAtTime() );
+            if (mView.getContext() instanceof PublishedVideosActivity) {
+                retriever.setDataSource(ConnectedAppNode.getAppNode().getPubDir() + "/videos/" + mItem.getName());
+                imageView.setImageBitmap(retriever.getFrameAtTime());
+            } else {
+                retriever.setDataSource(ConnectedAppNode.getAppNode().getSubDir() + "/videos/" + mItem.getName());
+                imageView.setImageBitmap(retriever.getFrameAtTime());
             }
         }
 

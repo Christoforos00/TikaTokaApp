@@ -20,4 +20,7 @@
     <string name="channelname">ChannelName</string>
     <string name="video_name">Video Name</string>
     <string name="video_options">Video Options</string>
+    <string name="channel_name_must_be_between_3_12_alphanumerical_characters">Channel Name must contain 3-12 alphanumerical characters!</string>
+    <string name="wrong_input">Wrong Input!</string>
+    <string name="ok">OK</string>
 </resources>

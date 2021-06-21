@@ -26,15 +26,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
-import gr.aueb.tikatokaapp.Core.Value;
 import gr.aueb.tikatokaapp.R;
-import gr.aueb.tikatokaapp.View.fragmentVideoList.VideoListFragment;
 
 
-public class UploadVideosActivity extends AppCompatActivity implements VideoListFragment.OnListFragmentInteractionListener {
+public class UploadVideosActivity extends AppCompatActivity {
 
     public static final int CAMERA_PERMISSION_CODE = 100;
     public static final int RECORD_CODE = 1;
@@ -51,29 +48,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
 
         findViewById(R.id.rec_button).setOnClickListener(v -> onRec());
         findViewById(R.id.gallery_button).setOnClickListener(v -> onGallery());
-
-        if (findViewById(R.id.fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-            VideoListFragment videoListFragment = VideoListFragment.newInstance(1);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, videoListFragment)
-                    .commit();
-        }
         getCameraPermission();
-    }
-
-
-    @Override
-    public void onListFragmentInteraction(Value item) {
-        //can delete
-    }
-
-    @Override
-    public ArrayList<Value> getVideoList() {
-
-        return new ArrayList<Value>();
     }
 
 
@@ -83,7 +58,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
         startActivityForResult(intent, RECORD_CODE);
     }
 
-    public void onGallery(){
+    public void onGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("video/*");
         startActivityForResult(intent, GALLERY_CODE);
@@ -97,7 +72,7 @@ public class UploadVideosActivity extends AppCompatActivity implements VideoList
             OLD_VIDEO_PATH = getRealPathFromURI(vid);
             NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();
             showPopUp(true);
-        }else if (resultCode == RESULT_OK && requestCode == GALLERY_CODE) {
+        } else if (resultCode == RESULT_OK && requestCode == GALLERY_CODE) {
             Uri vid = data.getData();
             OLD_VIDEO_PATH = getRealPathFromURI(vid);
             NEW_VIDEO_PATH = ConnectedAppNode.getAppNode().getPubDir();

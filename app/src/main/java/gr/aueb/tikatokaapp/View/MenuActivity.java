@@ -14,26 +14,29 @@ import android.widget.TextView;
 
 import java.io.File;
 
+import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
 import gr.aueb.tikatokaapp.R;
 
 public class MenuActivity extends AppCompatActivity {
-    String userName;
     private static final String USER_NAME_EXTRA = "user_name_extra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        userName = this.getIntent().getStringExtra(USER_NAME_EXTRA);
         TextView title = (TextView) findViewById(R.id.channel_name_title);
-        title.setText(userName);
+        title.setText(ConnectedAppNode.getAppNode().getName());
         findViewById(R.id.channel_button).setOnClickListener(v -> onChannelPressed());
         findViewById(R.id.feed_button).setOnClickListener(v -> onFeedPressed());
         findViewById(R.id.subs_button).setOnClickListener(v -> onSubscriptionsPressed());
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        ConnectedAppNode.clearAppNode();
+        startActivity(intent);
 
     }
 

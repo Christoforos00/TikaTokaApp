@@ -48,6 +48,13 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onListFragmentInteraction(Value item) {
@@ -113,7 +120,8 @@ public class PublishedVideosActivity extends AppCompatActivity implements VideoL
         }
 
         @Override
-        protected void onPostExecute(String result) { }
+        protected void onPostExecute(String result) {
+        }
 
     }
 

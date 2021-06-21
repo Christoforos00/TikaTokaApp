@@ -1,5 +1,6 @@
 package gr.aueb.tikatokaapp.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -10,12 +11,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import gr.aueb.tikatokaapp.Core.AppNode;
 import gr.aueb.tikatokaapp.Core.ConnectedAppNode;
@@ -48,41 +53,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void onEnterClicked() {
         userName = ((EditText) findViewById(R.id.userName_text)).getText().toString();
+        if (userName.length() < 3 || userName.length() > 12 || !validateName(userName)) {
+            showPopUp();
+            return;
+        }
         AppNodeRunner run = new AppNodeRunner();
         run.execute();
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-        intent.putExtra(USER_NAME_EXTRA, userName);
+        System.out.println(ConnectedAppNode.getAppNode());
         startActivity(intent);
     }
 
+    public void showPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View customLayout = getLayoutInflater().inflate(R.layout.wrong_input, null);
+        builder.setView(customLayout);
+        AlertDialog dialog = builder.create();
+        Button OKbtn = (Button) customLayout.findViewById(R.id.OK_btn);
+        OKbtn.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
 
-    public static String getIp() {
-        BufferedReader in = null;
-        String ip;
-        try {
-            URL whatismyip = new URL("http://checkip.amazonaws.com");
-            in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            ip = in.readLine();
-            return ip;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return "";
+
+    // ONLY ALPHANUMERICAL
+    public boolean validateName(String channelName) {
+        String valid = "^[a-zA-Z0-9]+$";
+        Pattern pattern = Pattern.compile(valid);
+        Matcher matcher = pattern.matcher(channelName);
+        return matcher.matches();
     }
 
     private class AppNodeRunner extends AsyncTask<String, String, String> {

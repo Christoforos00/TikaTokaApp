@@ -10,4 +10,14 @@ public class ConnectedAppNode {
     public static void setAppNode(AppNode newAppNode) {
         appNode = newAppNode;
     }
+
+    public static void clearAppNode()  {
+        appNode.disconnect();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        appNode = null;
+    }
 }
